@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:45:29 by hgenc             #+#    #+#             */
-/*   Updated: 2025/05/30 11:24:31 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/05/30 11:24:48 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,3 @@ char *ft_itoa(int n)
     ft_convert_to_string(temp_n, ptr, num_len);
     return (ptr);
 }
-
