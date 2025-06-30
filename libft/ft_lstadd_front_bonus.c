@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 10:11:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/06/30 10:11:12 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:08:28 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:08:30 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	size_t	s_len;
-	size_t	i;
-	char	*ptr;
-
-	if (s == NULL || f == NULL)
-		return (NULL);
-	s_len = ft_strlen(s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < s_len)
-	{
-		ptr[i] = f(i, s[i]);
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	if (lst == NULL || new == NULL)
+		return ;
+	new->next = *lst;
+	*lst = new;
 }

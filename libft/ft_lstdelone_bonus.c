@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 10:11:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/06/30 10:11:12 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:08:39 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:08:41 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	size_t	s_len;
-	size_t	i;
-	char	*ptr;
-
-	if (s == NULL || f == NULL)
-		return (NULL);
-	s_len = ft_strlen(s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < s_len)
-	{
-		ptr[i] = f(i, s[i]);
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	if (!lst || !del)
+		return ;
+	if (lst->content)
+		del(lst->content);
+	free(lst);
 }

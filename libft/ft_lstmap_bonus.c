@@ -1,36 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 10:11:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/06/30 10:11:12 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:08:54 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:08:55 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	size_t	s_len;
-	size_t	i;
-	char	*ptr;
+	t_list	*new_lst_head;
+	t_list	*new_node;
+	void	*new_content;
 
-	if (s == NULL || f == NULL)
+	if (!lst || !f || !del)
 		return (NULL);
-	s_len = ft_strlen(s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < s_len)
+	new_lst_head = NULL;
+	while (lst)
 	{
-		ptr[i] = f(i, s[i]);
-		i++;
+		new_content = f(lst->content);
+		new_node = ft_lstnew(new_content);
+		if (!new_node)
+		{
+			del(new_content);
+			ft_lstclear(&new_lst_head, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&new_lst_head, new_node);
+		lst = lst->next;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	return (new_lst_head);
 }

@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 10:11:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/06/30 10:11:12 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:08:59 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:09:01 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+t_list	*ft_lstnew(void *content)
 {
-	size_t	s_len;
-	size_t	i;
-	char	*ptr;
+	t_list	*node;
 
-	if (s == NULL || f == NULL)
+	node = (t_list *)malloc(sizeof(t_list));
+	if (node == NULL)
 		return (NULL);
-	s_len = ft_strlen(s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < s_len)
-	{
-		ptr[i] = f(i, s[i]);
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	node->content = content;
+	node->next = NULL;
+	return (node);
 }

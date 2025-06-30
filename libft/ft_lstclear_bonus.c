@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 10:11:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/06/30 10:11:12 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:08:33 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:08:36 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	size_t	s_len;
-	size_t	i;
-	char	*ptr;
+	t_list	*current;
+	t_list	*next;
 
-	if (s == NULL || f == NULL)
-		return (NULL);
-	s_len = ft_strlen(s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < s_len)
+	if (!lst || !del)
+		return ;
+	current = *lst;
+	while (current)
 	{
-		ptr[i] = f(i, s[i]);
-		i++;
+		next = current->next;
+		if (current->content)
+			del(current->content);
+		free(current);
+		current = next;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	*lst = NULL;
 }

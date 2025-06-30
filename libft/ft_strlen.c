@@ -1,9 +1,23 @@
-size_t ft_strlen(const char *c)
-{
-    size_t count;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/30 10:11:03 by hgenc             #+#    #+#             */
+/*   Updated: 2025/06/30 10:36:42 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-    count = 0;
-    while (c[count] != '\0')
-        count++;
-    return (count);
+#include <stddef.h>
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	count;
+
+	count = 0;
+	while (s[count] != '\0')
+		count++;
+	return (count);
 }
