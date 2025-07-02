@@ -1,3 +1,78 @@
+# # Projenin ana çıktısı olan kütüphanenin adı
+# NAME = libftprintf.a
+
+# # Derleyici ve derleme sırasında kullanılacak bayraklar (hataları gösterir)
+# CC = cc
+# CFLAGS = -Wall -Wextra -Werror
+
+# # Arşivleme ve silme komutları için kısaltmalar
+# AR = ar rcs
+# RM = rm -f
+
+# # --- Kaynak Dosyaları ---
+
+# # Kendi projenizin (ft_printf) kaynak dosyalarını buraya listeleyin
+# SRCS = ft_printf.c \
+#        ft_printf_utils.c
+
+# # Kaynak dosyası listesinden (.c) obje dosyası listesini (.o) otomatik oluştur
+# OBJS = $(SRCS:.c=.o)
+
+# # --- Libft Kütüphanesi Ayarları ---
+
+# # libft kütüphanesinin bulunduğu dizin
+# LIBFT_DIR = libft
+
+# # libft kütüphanesinin tam yolu
+# LIBFT = $(LIBFT_DIR)/libft.a
+
+# #
+# # --- Derleme Kuralları ---
+# #
+
+# # 'make' komutu çalıştırıldığında çalışacak ana kural.
+# all: $(LIBFT) $(NAME)
+
+# # Kendi kütüphanemizi (libftprintf.a) oluşturma kuralı
+# $(NAME): $(OBJS)
+# 	$(AR) $(NAME) $(OBJS)
+
+# # libft kütüphanesini derleme kuralı.
+# $(LIBFT):
+# 	make -C $(LIBFT_DIR)
+
+# # .c uzantılı kaynak dosyalarını .o uzantılı obje dosyalarına derleme kuralı
+# %.o: %.c ft_printf.h
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+# # --- Temizlik Kuralları ---
+
+# # Sadece obje dosyalarını temizler.
+# clean:
+# 	$(RM) $(OBJS)
+# 	make clean -C $(LIBFT_DIR)
+
+# # Obje dosyaları ve ana kütüphane dosyası dahil her şeyi temizler.
+# fclean: clean
+# 	$(RM) $(NAME)
+# 	make fclean -C $(LIBFT_DIR)
+
+# # Projeyi tamamen temizleyip baştan derler.
+# re: fclean all
+
+# # Bu hedeflerin birer dosya olmadığını, komut olduğunu belirtir.
+# .PHONY: all clean fclean re
+
+
+
+
+
+
+#######################################################################
+
+
+
+
 # NAME = libftprintf.a
 # CC = cc
 # CFLAGS = -Wall -Wextra -Werror
