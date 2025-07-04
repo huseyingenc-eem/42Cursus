@@ -10,7 +10,7 @@ Aşağıda tamamladığım ve üzerinde çalıştığım projelerin bir listesin
 
 ### 1. Libft (Kütüphane Fonksiyonları) 🛠️
 
-**Durum:** Tamamlandı ✅
+**Durum:** Başarıyla Geçti 125/125 ✅
 
 **Açıklama:** Bu proje, C dilinde sıkça kullanılan standart kütüphane fonksiyonlarının bir kısmını yeniden implemente etmeyi amaçlar. `malloc`, `free` gibi dinamik bellek yönetimi fonksiyonları hariç tutulmuştur. Bu proje, C dilinin temellerini ve bellek yönetimini daha iyi anlamamı sağladı.
 
@@ -25,7 +25,7 @@ Aşağıda tamamladığım ve üzerinde çalıştığım projelerin bir listesin
 
 ### 2. ft_printf (Printf Fonksiyonu) 📝
 
-**Durum:** Tamamlandı ✅
+**Durum:** Başarıyla Geçti 100/125 ✅
 
 **Açıklama:** Bu proje, C'nin meşhur `printf` fonksiyonunu yeniden hayata geçirmeyi hedefler. Proje, değişken sayıda argüman alabilen (variadic) fonksiyonların nasıl çalıştığını anlamak için harika bir fırsattır. `%c, %s, %p, %d, %i, %u, %x, %X, %%` gibi temel format belirteçlerini işlemesi gerekmektedir.
 
