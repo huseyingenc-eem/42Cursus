@@ -8,7 +8,7 @@ Aşağıda tamamladığım ve üzerinde çalıştığım projelerin bir listesin
 
 ---
 
-### 1. Libft (Kütüphane Fonksiyonları) 🛠️
+### 1. Libft (Kütüphane Fonksiyonları) 🛠️(./libft/)
 
 **Durum:** Başarıyla Geçti 125/125 ✅
 
@@ -23,7 +23,7 @@ Aşağıda tamamladığım ve üzerinde çalıştığım projelerin bir listesin
 
 ---
 
-### 2. ft_printf (Printf Fonksiyonu) 📝
+### 2. ft_printf (Printf Fonksiyonu) 📝(./ft_printf/)
 
 **Durum:** Başarıyla Geçti 100/125 ✅
 
