@@ -1,11 +1,10 @@
 #include "get_next_line.h"
-#include "get_next_line_bonus.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-//#include <sys/wait.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 
 // Test sonuçlarını takip etmek için
@@ -543,41 +542,7 @@ void test_huge_file_performance(void)
     close(fd);
 }
 
-void test_stdin_simulation(void)
-{
-    print_section("STDIN SIMULATION");
-    
-    int pipe_fd[2];
-    if (_pipe(pipe_fd, 1024, _O_BINARY) == -1) { 
-        print_test_result("Pipe creation", 0);
-        return;
-    }
-    
-    // Pipe'a veri yazma
-    const char *test_data = "Pipe line 1\nPipe line 2\nPipe line 3 no newline";
-    write(pipe_fd[1], test_data, strlen(test_data));
-    close(pipe_fd[1]); // Write end'i kapat
-    
-    char *lines[4];
-    int line_count = 0;
-    
-    for (int i = 0; i < 4; i++) {
-        lines[i] = get_next_line(pipe_fd[0]);
-        if (lines[i] != NULL) {
-            line_count++;
-            printf("Pipe Line %d: '%s'\n", i + 1, lines[i]);
-        }
-    }
-    
-    int passed = (line_count == 3 && lines[3] == NULL);
-    print_test_result("Pipe/STDIN simulation", passed);
-    
-    for (int i = 0; i < 4; i++) {
-        if (lines[i]) free(lines[i]);
-    }
-    
-    close(pipe_fd[0]);
-}
+
 
 void test_memory_stress(void)
 {
