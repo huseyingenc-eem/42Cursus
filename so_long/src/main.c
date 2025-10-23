@@ -1,85 +1,50 @@
-#include "../include/utils.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 19:05:00 by hgenc             #+#    #+#             */
+/*   Updated: 2025/10/23 16:59:40 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/map.h"
+#include "../include/game.h"
+#include "../include/utils.h"
 
-static void	print_stats(const t_map *map)
+static bool load_and_validate_map(const char *path, t_map *map)
 {
-    ft_printf("rows: %d\n", (int)map->rows);
-    ft_printf("cols: %d\n", (int)map->cols);
-    ft_printf("P: %d  E: %d  C: %d\n", map->count_p, map->count_e, map->count_c);
-    ft_printf("P at (y,x): %d, %d\n", map->py, map->px);
+    if (!load_map(path, map))
+        return (false);
+    return (validate_map(map));
 }
 
-static void	print_grid(const t_map *map)
+static void	check_args(int argc, char **argv)
 {
-    size_t	row;
-
-    ft_printf("== Original grid ==\n");
-    row = 0;
-    while (row < map->rows)
-    {
-        ft_printf("%s\n", map->grid[row]);
-        row++;
-    }
-}
-
-static void	print_tiles(const t_map *map)
-{
-    size_t	row;
-    size_t	col;
-
-    ft_printf("== Tiles (numeric) ==\n");
-    row = 0;
-    while (row < map->rows)
-    {
-        col = 0;
-        while (col < map->cols)
-        {
-            ft_printf("%d", map->tiles[row][col]);
-            col++;
-        }
-        ft_printf("\n");
-        row++;
-    }
+    if (argc != 2)
+        error_exit("Error\nUsage: ./so_long <map.ber>");
+    if (!has_ber_extension(argv[1]))
+        error_exit("Error\nExpected .ber");
 }
 
 int	main(int argc, char **argv)
 {
     t_map	map;
 
-    if (argc != 2)
-    {
-        error_exit("Usage: ./so_long <map.ber>");
-        return (1);
-    }
-    ft_printf("[STEP 0] Checking file extension...\n");
-    if (!has_ber_extension(argv[1]))
-    {
-        error_exit("Map file must have .ber extension");
-        return (1);
-    }
-    ft_printf("[STEP 1] Loading map file...\n");
-    if (!load_map(argv[1], &map))
-    {
-        error_exit("Failed to load map file");
-        return (1);
-    }
-    ft_printf("[STEP 2] Validating map structure...\n");
-    if (!validate_map(&map))
-    {
-        free_map(&map);
-        return (1);
-    }
-    print_stats(&map);
-    print_grid(&map);
-    print_tiles(&map);
-    ft_printf("[STEP 3] Checking reachability (BFS)...\n");
+    check_args(argc, argv);
+    if (!load_and_validate_map(argv[1], &map))
+        error_exit("Invalid map");
     if (!validate_map_reachable(&map))
     {
-        error_exit("Map is not solvable");
         free_map(&map);
-        return (1);
+        error_exit("No valid path");
     }
-    ft_printf("[OK] Map is valid and solvable!\n");
-    free_map(&map);
+    if (!game_start(&map))
+    {
+        free_map(&map);
+        error_exit("Init fail");
+    }
     return (0);
 }

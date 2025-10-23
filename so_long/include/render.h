@@ -1,0 +1,15 @@
+#ifndef RENDER_H
+# define RENDER_H
+
+# define TILE    64
+# define VIEW_W  20
+# define VIEW_H  15
+
+# include <stdbool.h>
+
+bool	init_window(void);
+bool	load_textures(void);
+void	first_draw(void);
+void	redraw(void);
+
+#endif
