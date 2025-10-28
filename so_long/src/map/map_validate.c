@@ -1,184 +1,157 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_validate.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/28 16:20:00 by hgenc             #+#    #+#             */
+/*   Updated: 2025/10/28 16:08:50 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/map.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
-#include <string.h>
 
-// Karakter → Tile enum'a çevir
-static uint8_t tile_from_char(char ch)
+static uint8_t	tile_from_char(char ch)
 {
-    if (ch == '1') return T_WALL;
-    if (ch == '0') return T_EMPTY;
-    if (ch == 'C') return T_COL;
-    if (ch == 'E') return T_EXIT;
-    if (ch == 'P') return T_PLAYER;
-    return T_WALL; // Default duvar yap
+	if (ch == '1')
+		return (T_WALL);
+	if (ch == '0')
+		return (T_EMPTY);
+	if (ch == 'C')
+		return (T_COL);
+	if (ch == 'E')
+		return (T_EXIT);
+	if (ch == 'P')
+		return (T_PLAYER);
+	error_exit("Invalid character in map");
+	return (T_WALL);
 }
 
-// Tiles dizisi için memory ayır - GÜVENLE
-static bool alloc_tiles(t_map *m)
+static void	alloc_tiles(t_map *m)
 {
-    size_t r;
-    
-    // Çok büyük haritaları reddet
-    if (m->rows > 2000 || m->cols > 2000)
-    {
-        ft_printf("Error: Map too large (%zu x %zu)\n", m->rows, m->cols);
-        return false;
-    }
-    
-    m->tiles = malloc(sizeof(uint8_t *) * m->rows);
-    if (!m->tiles)
-        return false;
-    
-    // Başlangıçta NULL'la
-    for (r = 0; r < m->rows; r++)
-        m->tiles[r] = NULL;
-    
-    // Her satır için memory ayır
-    for (r = 0; r < m->rows; r++)
-    {
-        m->tiles[r] = malloc(sizeof(uint8_t) * m->cols);
-        if (!m->tiles[r])
-        {
-            // Hata durumunda önceki satırları temizle
-            for (size_t i = 0; i < r; i++)
-            {
-                free(m->tiles[i]);
-                m->tiles[i] = NULL;
-            }
-            free(m->tiles);
-            m->tiles = NULL;
-            return false;
-        }
-    }
-    return true;
+	size_t	r;
+	size_t	i;
+
+	if (m->rows > 2000 || m->cols > 2000)
+		error_exit("Map too large");
+	m->tiles = (uint8_t **)malloc(sizeof(uint8_t *) * m->rows);
+	if (!m->tiles)
+		error_exit("Allocation failed (tiles)");
+	r = 0;
+	while (r < m->rows)
+	{
+		m->tiles[r] = NULL;
+		r++;
+	}
+	r = 0;
+	while (r < m->rows)
+	{
+		m->tiles[r] = (uint8_t *)malloc(sizeof(uint8_t) * m->cols);
+		if (!m->tiles[r])
+		{
+			i = 0;
+			while (i < r)
+			{
+				free(m->tiles[i]);
+				m->tiles[i] = NULL;
+				i++;
+			}
+			free(m->tiles);
+			m->tiles = NULL;
+			error_exit("Allocation failed (tiles rows)");
+		}
+		r++;
+	}
 }
 
-// Dikdörtgen mi kontrol et
-static bool check_rectangular(const t_map *m)
+static void	check_rectangular(const t_map *m)
 {
-    size_t r;
-    
-    for (r = 0; r < m->rows; r++)
-    {
-        if (ft_strlen(m->grid[r]) != m->cols)
-        {
-            ft_printf("Error: Row %zu length mismatch\n", r);
-            return false;
-        }
-    }
-    return true;
+	size_t	r;
+
+	r = 0;
+	while (r < m->rows)
+	{
+		if (ft_strlen(m->grid[r]) != m->cols)
+			error_exit("Row length mismatch (not rectangular)");
+		r++;
+	}
 }
 
-// Dış duvarlar tamamen '1' mi?
-static bool check_outer_walls(const t_map *m)
+static void	check_outer_walls(const t_map *m)
 {
-    size_t c, r;
-    
-    // Üst ve alt satır
-    for (c = 0; c < m->cols; c++)
-    {
-        if (m->tiles[0][c] != T_WALL || m->tiles[m->rows - 1][c] != T_WALL)
-            return false;
-    }
-    
-    // Sol ve sağ sütun
-    for (r = 0; r < m->rows; r++)
-    {
-        if (m->tiles[r][0] != T_WALL || m->tiles[r][m->cols - 1] != T_WALL)
-            return false;
-    }
-    return true;
+	size_t	c;
+	size_t	r;
+
+	c = 0;
+	while (c < m->cols)
+	{
+		if (m->tiles[0][c] != T_WALL
+			|| m->tiles[m->rows - 1][c] != T_WALL)
+			error_exit("Map must be surrounded by walls (top/bottom)");
+		c++;
+	}
+	r = 0;
+	while (r < m->rows)
+	{
+		if (m->tiles[r][0] != T_WALL
+			|| m->tiles[r][m->cols - 1] != T_WALL)
+			error_exit("Map must be surrounded by walls (left/right)");
+		r++;
+	}
 }
 
-// Geçerli karakterler mi + P/E/C sayılarını say + tiles dizisini doldur
-static bool fill_tiles_and_count(t_map *m)
+static void	fill_tiles_and_count(t_map *m)
 {
-    size_t r, c;
-    uint8_t tile;
-    
-    m->count_p = 0;
-    m->count_e = 0;
-    m->count_c = 0;
-    
-    for (r = 0; r < m->rows; r++)
-    {
-        for (c = 0; c < m->cols; c++)
-        {
-            tile = tile_from_char(m->grid[r][c]);
-            
-            // Geçersiz karakter kontrolü
-            if (tile == T_WALL && m->grid[r][c] != '1')
-            {
-                ft_printf("Error: Invalid char '%c' at (%zu,%zu)\n", 
-                         m->grid[r][c], r, c);
-                return false;
-            }
-            
-            m->tiles[r][c] = tile;
-            
-            if (tile == T_PLAYER)
-            {
-                m->count_p++;
-                m->px = c;
-                m->py = r;
-            }
-            else if (tile == T_EXIT)
-                m->count_e++;
-            else if (tile == T_COL)
-                m->count_c++;
-        }
-    }
-    return true;
+	size_t	r;
+	size_t	c;
+	uint8_t	t;
+
+	m->count_p = 0;
+	m->count_e = 0;
+	m->count_c = 0;
+	r = 0;
+	while (r < m->rows)
+	{
+		c = 0;
+		while (c < m->cols)
+		{
+			t = tile_from_char(m->grid[r][c]);
+			m->tiles[r][c] = t;
+			if (t == T_PLAYER)
+			{
+				m->count_p++;
+				m->px = c;
+				m->py = r;
+			}
+			else if (t == T_EXIT)
+				m->count_e++;
+			else if (t == T_COL)
+				m->count_c++;
+			c++;
+		}
+		r++;
+	}
 }
 
-// P/E/C sayıları doğru mu?
-static bool check_pec_counts(const t_map *m)
+static void	check_pec_counts(const t_map *m)
 {
-    if (m->count_p != 1)
-    {
-        ft_printf("Error: Need exactly 1 player, found %d\n", m->count_p);
-        return false;
-    }
-    if (m->count_e != 1)
-    {
-        ft_printf("Error: Need exactly 1 exit, found %d\n", m->count_e);
-        return false;
-    }
-    if (m->count_c < 1)
-    {
-        ft_printf("Error: Need at least 1 collectible, found %d\n", m->count_c);
-        return false;
-    }
-    return true;
+	if (m->count_p != 1)
+		error_exit("Need exactly 1 player");
+	if (m->count_e != 1)
+		error_exit("Need exactly 1 exit");
+	if (m->count_c < 1)
+		error_exit("Need at least 1 collectible");
 }
 
-// ANA VALIDATION FONKSİYONU
-bool validate_map(t_map *m)
+bool	validate_map(t_map *m)
 {
-    ft_printf("Validating map: %zu x %zu\n", m->rows, m->cols);
-    
-    if (!check_rectangular(m))
-        return false;
-        
-    if (!alloc_tiles(m))
-    {
-        ft_printf("Error: Memory allocation failed\n");
-        return false;
-    }
-    
-    if (!fill_tiles_and_count(m))
-        return false;
-        
-    if (!check_pec_counts(m))
-        return false;
-        
-    if (!check_outer_walls(m))
-    {
-        ft_printf("Error: Map not surrounded by walls\n");
-        return false;
-    }
-    
-    ft_printf("Map validation successful\n");
-    return true;
+	check_rectangular(m);
+	alloc_tiles(m);
+	fill_tiles_and_count(m);
+	check_pec_counts(m);
+	check_outer_walls(m);
+	return (true);
 }

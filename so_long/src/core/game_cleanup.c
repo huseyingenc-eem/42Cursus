@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game_cleanup.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/28 17:06:14 by hgenc             #+#    #+#             */
+/*   Updated: 2025/10/28 17:27:26 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/game.h"
+#include "../../include/render.h"
 #include "../../include/map.h"
+#include "../../include/utils.h"
 
-static void	destroy_images(void)
+static void	destroy_textures(t_app *a)
 {
-	t_app	*a;
-
-	a = app();
+	if (!a || !a->mlx)
+		return ;
 	if (a->tex.wall.ptr)
 		mlx_destroy_image(a->mlx, a->tex.wall.ptr);
 	if (a->tex.floor.ptr)
@@ -16,6 +29,56 @@ static void	destroy_images(void)
 		mlx_destroy_image(a->mlx, a->tex.col.ptr);
 	if (a->tex.exit_tile.ptr)
 		mlx_destroy_image(a->mlx, a->tex.exit_tile.ptr);
+	a->tex.wall.ptr = NULL;
+	a->tex.floor.ptr = NULL;
+	a->tex.player.ptr = NULL;
+	a->tex.col.ptr = NULL;
+	a->tex.exit_tile.ptr = NULL;
+}
+
+static void	destroy_window_and_display(t_app *a)
+{
+	if (!a)
+		return ;
+	if (a->win && a->mlx)
+		mlx_destroy_window(a->mlx, a->win);
+	a->win = NULL;
+	#ifdef __linux__
+	if (a->mlx)
+		mlx_destroy_display(a->mlx);
+	if (a->mlx)
+		free(a->mlx);
+	a->mlx = NULL;
+	#endif
+}
+
+static void	free_map_all(t_map *m)
+{
+	size_t	i;
+
+	if (!m)
+		return ;
+	if (m->tiles)
+	{
+		i = 0;
+		while (i < m->rows)
+		{
+			free(m->tiles[i]);
+			i++;
+		}
+		free(m->tiles);
+		m->tiles = NULL;
+	}
+	if (m->grid)
+	{
+		i = -1;
+		while (++i < m->rows)
+		{
+			free(m->grid[i]);
+		}
+		free(m->grid);
+		m->grid = NULL;
+	}
 }
 
 void	game_cleanup(void)
@@ -23,11 +86,10 @@ void	game_cleanup(void)
 	t_app	*a;
 
 	a = app();
-	destroy_images();
-	if (a->win)
-		mlx_destroy_window(a->mlx, a->win);
-	/* bazı mlx sürümlerinde mlx_destroy_display(a->mlx) gerekebilir (Linux) */
-	/* free_map() senin map modülünde */
-	if (a->map)
-		free_map(a->map);
+	if (!a)
+		return ;
+	destroy_textures(a);
+	free_map_all(a->map);
+	a->map = NULL;
+	destroy_window_and_display(a);
 }

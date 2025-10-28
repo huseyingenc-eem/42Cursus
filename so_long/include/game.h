@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 14:28:31 by hgenc             #+#    #+#             */
-/*   Updated: 2025/10/23 18:57:35 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/10/28 15:21:54 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_app
     void	*mlx;
     void	*win;
     int		moves;
-    int		tile_size;  // Dinamik tile boyutu
+    int		tile_size;
     t_tex	tex;
     t_map	*map;
 }	t_app;

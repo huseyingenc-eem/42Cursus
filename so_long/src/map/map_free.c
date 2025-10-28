@@ -1,25 +1,49 @@
 #include "../../include/map.h"
 #include <stdlib.h>
 
-void free_map(t_map *m)
+static void	free_tiles(t_map *m)
+{
+    size_t	r;
+
+    if (!m->tiles)
+        return ;
+    r = 0;
+    while (r < m->rows)
+    {
+        if (m->tiles[r])
+            free(m->tiles[r]);
+        r++;
+    }
+    free(m->tiles);
+    m->tiles = NULL;
+}
+
+static void	free_grid(t_map *m)
+{
+    if (!m->grid)
+        return ;
+    if (m->grid[0])
+        free(m->grid[0]);
+    free(m->grid);
+    m->grid = NULL;
+}
+
+static void	reset_map_values(t_map *m)
+{
+    m->rows = 0;
+    m->cols = 0;
+    m->count_p = 0;
+    m->count_e = 0;
+    m->count_c = 0;
+    m->px = 0;
+    m->py = 0;
+}
+
+void	free_map(t_map *m)
 {
     if (!m)
-        return;
-    
-    // tiles dizisini temizle
-    if (m->tiles)
-    {
-        for (size_t r = 0; r < m->rows; r++)
-            free(m->tiles[r]);
-        free(m->tiles);
-        m->tiles = NULL;
-    }
-    
-    // grid'i temizle (split_lines'dan gelen pointer array)
-    if (m->grid)
-    {
-        free(m->grid[0]); // İlk satır = orjinal text'in başlangıcı
-        free(m->grid);    // Pointer array'i
-        m->grid = NULL;
-    }
+        return ;
+    free_tiles(m);
+    free_grid(m);
+    reset_map_values(m);
 }

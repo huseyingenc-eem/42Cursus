@@ -1,52 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_file.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/28 15:07:40 by hgenc             #+#    #+#             */
+/*   Updated: 2025/10/28 15:07:49 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/utils.h"
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #define BUFFER_SIZE 4096
 
+static char	*join_buffers(char *old, char *new_buf, size_t old_size,
+		size_t new_size)
+{
+	char	*result;
+	size_t	i;
+
+	result = malloc(old_size + new_size + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < old_size && old)
+	{
+		result[i] = old[i];
+		i++;
+	}
+	i = 0;
+	while (i < new_size)
+	{
+		result[old_size + i] = new_buf[i];
+		i++;
+	}
+	result[old_size + new_size] = '\0';
+	return (result);
+}
+
+static char	*read_loop(int fd)
+{
+	char	buffer[BUFFER_SIZE];
+	char	*result;
+	char	*temp;
+	ssize_t	bytes_read;
+	size_t	total_size;
+
+	result = NULL;
+	total_size = 0;
+	bytes_read = 1;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read <= 0)
+			break ;
+		temp = join_buffers(result, buffer, total_size, bytes_read);
+		if (!temp)
+		{
+			free(result);
+			return (NULL);
+		}
+		free(result);
+		result = temp;
+		total_size += bytes_read;
+	}
+	return (result);
+}
+
 char	*read_file(const char *path)
 {
-    int		file_descriptor;
-    char	buffer[BUFFER_SIZE];
-    char	*result;
-    ssize_t	bytes_read;
-    size_t	total_size;
+	int		fd;
+	char	*result;
 
-    file_descriptor = open(path, O_RDONLY);
-    if (file_descriptor < 0)
-        return (NULL);
-    result = NULL;
-    total_size = 0;
-    while ((bytes_read = read(file_descriptor, buffer, BUFFER_SIZE)) > 0)
-    {
-        char	*temp;
-        size_t	i;
-
-        temp = malloc(total_size + bytes_read + 1);
-        if (!temp)
-        {
-            free(result);
-            close(file_descriptor);
-            return (NULL);
-        }
-        i = 0;
-        while (i < total_size && result)
-        {
-            temp[i] = result[i];
-            i++;
-        }
-        free(result);
-        i = 0;
-        while (i < (size_t)bytes_read)
-        {
-            temp[total_size + i] = buffer[i];
-            i++;
-        }
-        total_size += bytes_read;
-        temp[total_size] = '\0';
-        result = temp;
-    }
-    close(file_descriptor);
-    return (result);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	result = read_loop(fd);
+	close(fd);
+	return (result);
 }
