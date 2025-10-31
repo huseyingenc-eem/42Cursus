@@ -31,10 +31,8 @@ void	camera_follow_with_deadzone(const t_map *map, int margin_x,
 	int			target_row;
 
 	cam = camera();
-	// Player pozisyonunu kameranın merkezine al
 	target_col = map->px - cam->view_w / 2;
 	target_row = map->py - cam->view_h / 2;
-	// Harita sınırlarını kontrol et
 	if (target_col < 0)
 		target_col = 0;
 	if (target_row < 0)

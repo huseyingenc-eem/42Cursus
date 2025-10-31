@@ -6,13 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:06:14 by hgenc             #+#    #+#             */
-/*   Updated: 2025/10/28 17:27:26 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/10/31 14:22:41 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
-#include "../../include/render.h"
 #include "../../include/map.h"
+#include "../../include/render.h"
 #include "../../include/utils.h"
 
 static void	destroy_textures(t_app *a)
@@ -41,18 +41,21 @@ static void	destroy_window_and_display(t_app *a)
 	if (!a)
 		return ;
 	if (a->win && a->mlx)
+	{
 		mlx_destroy_window(a->mlx, a->win);
-	a->win = NULL;
-	#ifdef __linux__
+		a->win = NULL;
+	}
+#ifdef __linux__
 	if (a->mlx)
+	{
 		mlx_destroy_display(a->mlx);
-	if (a->mlx)
 		free(a->mlx);
-	a->mlx = NULL;
-	#endif
+		a->mlx = NULL;
+	}
+#endif
 }
 
-static void	free_map_all(t_map *m)
+static void	free_map_internal(t_map *m)
 {
 	size_t	i;
 
@@ -63,7 +66,9 @@ static void	free_map_all(t_map *m)
 		i = 0;
 		while (i < m->rows)
 		{
-			free(m->tiles[i]);
+			if (m->tiles[i])
+				free(m->tiles[i]);
+			m->tiles[i] = NULL;
 			i++;
 		}
 		free(m->tiles);
@@ -71,11 +76,8 @@ static void	free_map_all(t_map *m)
 	}
 	if (m->grid)
 	{
-		i = -1;
-		while (++i < m->rows)
-		{
-			free(m->grid[i]);
-		}
+		if (m->grid[0])
+			free(m->grid[0]);
 		free(m->grid);
 		m->grid = NULL;
 	}
@@ -89,7 +91,10 @@ void	game_cleanup(void)
 	if (!a)
 		return ;
 	destroy_textures(a);
-	free_map_all(a->map);
-	a->map = NULL;
+	if (a->map)
+	{
+		free_map_internal(a->map);
+		a->map = NULL;
+	}
 	destroy_window_and_display(a);
 }

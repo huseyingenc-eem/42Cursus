@@ -6,13 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/10/23 15:50:20 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/10/31 14:11:39 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
 
-/* Bonus düşünürsen burada ekrana sayaç/mesaj çizersin. */
 void	draw_hud(void)
 {
 	(void)app();
