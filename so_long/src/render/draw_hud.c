@@ -5,14 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 00:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/10/31 14:11:39 by hgenc            ###   ########.fr       */
+/*   Created: 2025/10/31 15:23:19 by hgenc             #+#    #+#             */
+/*   Updated: 2025/10/31 15:23:43 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
+#include "../../include/camera.h"
+
 
 void	draw_hud(void)
 {
 	(void)app();
+	(void)camera();
 }

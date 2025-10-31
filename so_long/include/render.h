@@ -2,8 +2,8 @@
 # define RENDER_H
 
 # define TILE    64
-# define VIEW_W  20
-# define VIEW_H  15
+# define VIEW_W  40
+# define VIEW_H  30
 
 # include <stdbool.h>
 
