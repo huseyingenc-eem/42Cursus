@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:20:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/10/28 16:08:50 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/03 17:55:04 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,21 @@ static uint8_t	tile_from_char(char ch)
 static void	alloc_tiles(t_map *m)
 {
 	size_t	r;
-	size_t	i;
 
 	if (m->rows > 2000 || m->cols > 2000)
 		error_exit("Map too large");
 	m->tiles = (uint8_t **)malloc(sizeof(uint8_t *) * m->rows);
 	if (!m->tiles)
 		error_exit("Allocation failed (tiles)");
-	r = 0;
-	while (r < m->rows)
-	{
+	r = -1;
+	while (++r < m->rows)
 		m->tiles[r] = NULL;
-		r++;
-	}
-	r = 0;
-	while (r < m->rows)
+	r = -1;
+	while (++r < m->rows)
 	{
 		m->tiles[r] = (uint8_t *)malloc(sizeof(uint8_t) * m->cols);
 		if (!m->tiles[r])
-		{
-			i = 0;
-			while (i < r)
-			{
-				free(m->tiles[i]);
-				m->tiles[i] = NULL;
-				i++;
-			}
-			free(m->tiles);
-			m->tiles = NULL;
 			error_exit("Allocation failed (tiles rows)");
-		}
-		r++;
 	}
 }
 
@@ -71,12 +55,11 @@ static void	check_rectangular(const t_map *m)
 {
 	size_t	r;
 
-	r = 0;
-	while (r < m->rows)
+	r = -1;
+	while (++r < m->rows)
 	{
 		if (ft_strlen(m->grid[r]) != m->cols)
 			error_exit("Row length mismatch (not rectangular)");
-		r++;
 	}
 }
 
@@ -112,11 +95,11 @@ static void	fill_tiles_and_count(t_map *m)
 	m->count_p = 0;
 	m->count_e = 0;
 	m->count_c = 0;
-	r = 0;
-	while (r < m->rows)
+	r = -1;
+	while (++r < m->rows)
 	{
-		c = 0;
-		while (c < m->cols)
+		c = -1;
+		while (++c < m->cols)
 		{
 			t = tile_from_char(m->grid[r][c]);
 			m->tiles[r][c] = t;
@@ -130,9 +113,7 @@ static void	fill_tiles_and_count(t_map *m)
 				m->count_e++;
 			else if (t == T_COL)
 				m->count_c++;
-			c++;
 		}
-		r++;
 	}
 }
 

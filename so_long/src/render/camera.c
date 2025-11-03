@@ -1,18 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   camera.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 00:00:00 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/03 14:33:38 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/camera.h"
+#include "../../include/game.h"
 #include "../../include/map.h"
-
-static t_camera	g_cam;
-
-t_camera	*camera(void)
-{
-	return (&g_cam);
-}
 
 void	camera_setup_viewport(const t_map *map, int wanted_w, int wanted_h)
 {
 	t_camera	*cam;
 
-	cam = camera();
+	cam = &(app()->camera);
 	if ((int)map->cols <= wanted_w)
 		cam->view_w = map->cols;
 	else
@@ -23,14 +29,13 @@ void	camera_setup_viewport(const t_map *map, int wanted_w, int wanted_h)
 		cam->view_h = wanted_h;
 }
 
-void	camera_follow_with_deadzone(const t_map *map, int margin_x,
-		int margin_y)
+void	camera_follow(const t_map *map)
 {
 	t_camera	*cam;
 	int			target_col;
 	int			target_row;
 
-	cam = camera();
+	cam = &(app()->camera);
 	target_col = map->px - cam->view_w / 2;
 	target_row = map->py - cam->view_h / 2;
 	if (target_col < 0)
@@ -43,6 +48,4 @@ void	camera_follow_with_deadzone(const t_map *map, int margin_x,
 		target_row = map->rows - cam->view_h;
 	cam->start_col = target_col;
 	cam->start_row = target_row;
-	(void)margin_x;
-	(void)margin_y;
 }

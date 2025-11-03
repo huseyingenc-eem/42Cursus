@@ -31,7 +31,8 @@ SRCS := \
     src/utils/read_file.c \
     src/utils/split_lines.c \
     src/utils/path_utils.c \
-    src/utils/ft_printf.c
+    src/utils/ft_printf.c \
+	src/utils/ft_memset.c
 
 OBJS := $(SRCS:src/%.c=$(BUILD_DIR)/%.o)
 

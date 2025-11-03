@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/10/23 18:57:35 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/03 14:46:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ bool	load_textures(void)
 	if (!load_one(app_ctx->mlx, &app_ctx->tex.exit_tile, "assets/textures/exit.xpm"))
 		return (false);
 	
-	// Dinamik tile boyutu: İlk texture'ın boyutunu kullan
-	// (Tüm texture'lar aynı boyutta olmalı)
 	app_ctx->tile_size = app_ctx->tex.wall.w;
 	
 	return (true);

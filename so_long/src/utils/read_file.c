@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:07:40 by hgenc             #+#    #+#             */
-/*   Updated: 2025/10/28 15:07:49 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/03 16:01:11 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#define BUFFER_SIZE 4096
 
 static char	*join_buffers(char *old, char *new_buf, size_t old_size,
 		size_t new_size)
@@ -26,18 +24,12 @@ static char	*join_buffers(char *old, char *new_buf, size_t old_size,
 	result = malloc(old_size + new_size + 1);
 	if (!result)
 		return (NULL);
-	i = 0;
-	while (i < old_size && old)
-	{
+	i = -1;
+	while (++i < old_size && old)
 		result[i] = old[i];
-		i++;
-	}
-	i = 0;
-	while (i < new_size)
-	{
+	i = -1;
+	while (++i < new_size)
 		result[old_size + i] = new_buf[i];
-		i++;
-	}
 	result[old_size + new_size] = '\0';
 	return (result);
 }

@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_hud.c                                         :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/31 15:23:19 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 14:30:02 by hgenc            ###   ########.fr       */
+/*   Created: 2025/06/30 10:09:38 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/03 15:23:02 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/game.h"
-#include "../../include/camera.h"
+#include <stddef.h>
 
-
-void	draw_hud(void)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	(void)app();
+	size_t			i;
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)s;
+	i = -1;
+	while (++i < n)
+		ptr[i] = (unsigned char)c;
+	return (s);
 }

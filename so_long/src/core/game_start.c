@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game_start.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 17:29:01 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/03 17:29:06 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/game.h"
 #include "../../include/render.h"
 #include "../../include/input.h"
@@ -19,23 +31,19 @@ int	game_start(t_map *map)
 	t_app *a = app();
 	
 	a->map = map;
-	a->tile_size = 0; // Başlangıçta sıfır
+	a->tile_size = 0;
 	
-	// MLX'i başlat
 	a->mlx = mlx_init();
 	if (!a->mlx)
 		return (0);
 		
-	// Texture'ları yükle (tile_size'ı belirleyecek)
 	if (!load_textures())
 		return (0);
 		
-	// Artık tile_size belli, window'u aç
 	if (!init_window())
 		return (0);
 		
-	/* oyuncuyu kadraja oturtup ilk çizim */
-	camera_follow_with_deadzone(map, 10, 8);
+	camera_follow(map);
 	first_draw();
 	install_hooks();
 	mlx_loop(a->mlx);

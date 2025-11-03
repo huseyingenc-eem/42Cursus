@@ -6,14 +6,11 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:06:14 by hgenc             #+#    #+#             */
-/*   Updated: 2025/10/31 14:22:41 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/03 17:28:40 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
-#include "../../include/map.h"
-#include "../../include/render.h"
-#include "../../include/utils.h"
 
 static void	destroy_textures(t_app *a)
 {
