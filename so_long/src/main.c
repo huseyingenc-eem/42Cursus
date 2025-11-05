@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 19:05:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:58:08 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 #include "../include/map.h"
 #include "../include/utils.h"
 
-static bool	load_and_validate_map(const char *path, t_map *map)
+static const char	*load_and_validate_map(const char *path, t_map *map)
 {
-	if (!load_map(path, map))
-		return (false);
-	if (!validate_map(map))
-		return (false);
-	if (!validate_map_reachable(map))
-		return (false);
-	return (true);
+	const char	*err;
+
+	err = load_map(path, map);
+	if (err)
+		return (err);
+	err = validate_map(map);
+	if (err)
+		return (err);
+	err = validate_map_reachable(map);
+	if (err)
+		return (err);
+	return (NULL);
 }
 
 static void	check_args(int argc, char **argv)
@@ -35,15 +40,28 @@ static void	check_args(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_map map;
+	t_map		map;
+	t_app		app_instance;
+	size_t		i;
+	const char	*err;
 
 	check_args(argc, argv);
-	if (!load_and_validate_map(argv[1], &map))
-		error_exit("Map validation failed");
-
-	if (!game_start(&map))
+	i = 0;
+	while (i < sizeof(t_map))
+		((char *)&map)[i++] = 0;
+	i = 0;
+	while (i < sizeof(t_app))
+		((char *)&app_instance)[i++] = 0;
+	app_instance.map = &map;
+	err = load_and_validate_map(argv[1], &map);
+	if (err)
 	{
-		game_cleanup();
+		game_cleanup(&app_instance);
+		error_exit(err);
+	}
+	if (!game_start(&app_instance))
+	{
+		game_cleanup(&app_instance);
 		error_exit("Init fail");
 	}
 	return (0);

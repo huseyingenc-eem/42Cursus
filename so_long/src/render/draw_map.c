@@ -6,74 +6,63 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:59:04 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:23:44 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../../include/game.h"
 #include "../../include/camera.h"
+#include "../../include/game.h"
+#include "../../include/map.h"
 
-static void	ft_put_image(t_img img, int screen_tile_x, int screen_tile_y)
+static void	put_img(t_app *a, t_img img, int scr_x, int scr_y)
 {
-	t_app	*app_instance;
-
-	app_instance = app();
-	mlx_put_image_to_window(app_instance->mlx, app_instance->win, img.ptr,
-		screen_tile_x * app_instance->tile_size,
-		screen_tile_y * app_instance->tile_size);
+	mlx_put_image_to_window(a->mlx, a->win, img.ptr,
+		scr_x * a->tile_size, scr_y * a->tile_size);
 }
 
-static void	ft_draw_cell(int map_x, int map_y, int screen_tile_x, int screen_tile_y)
+static void	draw_cell(t_app *a, int map_x, int map_y, int scr_x, int scr_y)
 {
-	t_app	*app_instance;
-
-	app_instance = app();
-	ft_put_image(app_instance->tex.floor, screen_tile_x, screen_tile_y);
-	if (app_instance->map->tiles[map_y][map_x] == 0)
-		ft_put_image(app_instance->tex.wall, screen_tile_x, screen_tile_y);
-	else if (app_instance->map->tiles[map_y][map_x] == 2)
-		ft_put_image(app_instance->tex.col, screen_tile_x, screen_tile_y);
-	else if (app_instance->map->tiles[map_y][map_x] == 3)
-		ft_put_image(app_instance->tex.exit_tile, screen_tile_x, screen_tile_y);
+	put_img(a, a->tex.floor, scr_x, scr_y);
+	if (a->map->tiles[map_y][map_x] == T_WALL)
+		put_img(a, a->tex.wall, scr_x, scr_y);
+	else if (a->map->tiles[map_y][map_x] == T_COL)
+		put_img(a, a->tex.col, scr_x, scr_y);
+	else if (a->map->tiles[map_y][map_x] == T_EXIT)
+		put_img(a, a->tex.exit_tile, scr_x, scr_y);
 }
 
-static void	ft_draw_region(void)
+static void	draw_region(t_app *a)
 {
 	t_camera	*cam;
-	t_app		*a;
-	int			screen_y;
-	int			screen_x;
-	int			map_y;
-	int			map_x;
+	int			sy;
+	int			sx;
 
-	a = app();
-	cam = &(app()->camera);
-	screen_y = -1;
-	while (++screen_y < cam->view_h)
+	cam = &(a->camera);
+	sy = 0;
+	while (sy < cam->view_h)
 	{
-		screen_x = -1;
-		while (++screen_x < cam->view_w)
+		sx = 0;
+		while (sx < cam->view_w)
 		{
-			map_y = cam->start_row + screen_y;
-			map_x = cam->start_col + screen_x;
-			ft_draw_cell(map_x, map_y, screen_x, screen_y);
+			draw_cell(a, cam->start_col + sx, cam->start_row + sy, sx, sy);
+			sx++;
 		}
+		sy++;
 	}
 	if (a->map->px >= cam->start_col && a->map->px < cam->start_col + cam->view_w
 		&& a->map->py >= cam->start_row && a->map->py < cam->start_row + cam->view_h)
-		ft_put_image(a->tex.player,
+		put_img(a, a->tex.player,
 			a->map->px - cam->start_col, a->map->py - cam->start_row);
 }
 
-void	first_draw(void)
+void	first_draw(t_app *a)
 {
-	camera_follow(app()->map);
-	ft_draw_region();
+	camera_follow(a->map, &a->camera);
+	draw_region(a);
 }
 
-void	redraw(void)
+void	redraw(t_app *a)
 {
-	camera_follow(app()->map);
-	ft_draw_region();
+	camera_follow(a->map, &a->camera);
+	draw_region(a);
 }

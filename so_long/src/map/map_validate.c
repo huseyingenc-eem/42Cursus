@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:20:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:55:04 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../include/utils.h"
 #include <stdlib.h>
 
-static uint8_t	tile_from_char(char ch)
+static int	tile_from_char(char ch, const char **err)
 {
 	if (ch == '1')
 		return (T_WALL);
@@ -26,32 +26,33 @@ static uint8_t	tile_from_char(char ch)
 		return (T_EXIT);
 	if (ch == 'P')
 		return (T_PLAYER);
-	error_exit("Invalid character in map");
+	*err = "Invalid character in map";
 	return (T_WALL);
 }
 
-static void	alloc_tiles(t_map *m)
+static const char	*alloc_tiles(t_map *m)
 {
 	size_t	r;
 
 	if (m->rows > 2000 || m->cols > 2000)
-		error_exit("Map too large");
-	m->tiles = (uint8_t **)malloc(sizeof(uint8_t *) * m->rows);
+		return ("Map too large");
+	m->tiles = (int **)malloc(sizeof(int *) * m->rows);
 	if (!m->tiles)
-		error_exit("Allocation failed (tiles)");
+		return ("Allocation failed (tiles)");
 	r = -1;
 	while (++r < m->rows)
 		m->tiles[r] = NULL;
 	r = -1;
 	while (++r < m->rows)
 	{
-		m->tiles[r] = (uint8_t *)malloc(sizeof(uint8_t) * m->cols);
+		m->tiles[r] = (int *)malloc(sizeof(int) * m->cols);
 		if (!m->tiles[r])
-			error_exit("Allocation failed (tiles rows)");
+			return ("Allocation failed (tiles row)");
 	}
+	return (NULL);
 }
 
-static void	check_rectangular(const t_map *m)
+static const char	*check_rectangular(const t_map *m)
 {
 	size_t	r;
 
@@ -59,11 +60,12 @@ static void	check_rectangular(const t_map *m)
 	while (++r < m->rows)
 	{
 		if (ft_strlen(m->grid[r]) != m->cols)
-			error_exit("Row length mismatch (not rectangular)");
+			return ("Row length mismatch (not rectangular)");
 	}
+	return (NULL);
 }
 
-static void	check_outer_walls(const t_map *m)
+static const char	*check_outer_walls(const t_map *m)
 {
 	size_t	c;
 	size_t	r;
@@ -73,7 +75,7 @@ static void	check_outer_walls(const t_map *m)
 	{
 		if (m->tiles[0][c] != T_WALL
 			|| m->tiles[m->rows - 1][c] != T_WALL)
-			error_exit("Map must be surrounded by walls (top/bottom)");
+			return ("Map must be surrounded by walls (top/bottom)");
 		c++;
 	}
 	r = 0;
@@ -81,16 +83,18 @@ static void	check_outer_walls(const t_map *m)
 	{
 		if (m->tiles[r][0] != T_WALL
 			|| m->tiles[r][m->cols - 1] != T_WALL)
-			error_exit("Map must be surrounded by walls (left/right)");
+			return ("Map must be surrounded by walls (left/right)");
 		r++;
 	}
+	return (NULL);
 }
 
-static void	fill_tiles_and_count(t_map *m)
+static const char	*fill_tiles_and_count(t_map *m)
 {
-	size_t	r;
-	size_t	c;
-	uint8_t	t;
+	size_t		r;
+	size_t		c;
+	int			t;
+	const char	*err;
 
 	m->count_p = 0;
 	m->count_e = 0;
@@ -101,7 +105,10 @@ static void	fill_tiles_and_count(t_map *m)
 		c = -1;
 		while (++c < m->cols)
 		{
-			t = tile_from_char(m->grid[r][c]);
+			err = NULL;
+			t = tile_from_char(m->grid[r][c], &err);
+			if (err)
+				return (err);
 			m->tiles[r][c] = t;
 			if (t == T_PLAYER)
 			{
@@ -115,24 +122,38 @@ static void	fill_tiles_and_count(t_map *m)
 				m->count_c++;
 		}
 	}
+	return (NULL);
 }
 
-static void	check_pec_counts(const t_map *m)
+static const char	*check_pec_counts(const t_map *m)
 {
 	if (m->count_p != 1)
-		error_exit("Need exactly 1 player");
+		return ("Need exactly 1 player");
 	if (m->count_e != 1)
-		error_exit("Need exactly 1 exit");
+		return ("Need exactly 1 exit");
 	if (m->count_c < 1)
-		error_exit("Need at least 1 collectible");
+		return ("Need at least 1 collectible");
+	return (NULL);
 }
 
-bool	validate_map(t_map *m)
+const char	*validate_map(t_map *m)
 {
-	check_rectangular(m);
-	alloc_tiles(m);
-	fill_tiles_and_count(m);
-	check_pec_counts(m);
-	check_outer_walls(m);
-	return (true);
+	const char	*err;
+
+	err = check_rectangular(m);
+	if (err)
+		return (err);
+	err = alloc_tiles(m);
+	if (err)
+		return (err);
+	err = fill_tiles_and_count(m);
+	if (err)
+		return (err);
+	err = check_pec_counts(m);
+	if (err)
+		return (err);
+	err = check_outer_walls(m);
+	if (err)
+		return (err);
+	return (NULL);
 }

@@ -10,28 +10,25 @@ MLX_LDF := -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
 BUILD_DIR := build
 
 SRCS := \
-    src/main.c \
-    src/core/app.c \
-    src/core/game_start.c \
-    src/core/game_loop.c \
-    src/core/game_cleanup.c \
-    src/input/key_hooks.c \
-    src/input/move_player.c \
-    src/render/camera.c \
-    src/render/mlx_boot.c \
-    src/render/draw_map.c \
-    src/render/draw_hud.c \
-    src/render/texture_load.c \
-    src/map/map_load.c \
-    src/map/map_validate.c \
-    src/map/path_check.c \
-    src/map/map_free.c \
-    src/utils/error_exit.c \
-    src/utils/str_utils.c \
-    src/utils/read_file.c \
-    src/utils/split_lines.c \
-    src/utils/path_utils.c \
-    src/utils/ft_printf.c \
+	src/main.c \
+	src/core/game_start.c \
+	src/core/game_cleanup.c \
+	src/input/key_hooks.c \
+	src/input/move_player.c \
+	src/render/camera.c \
+	src/render/mlx_boot.c \
+	src/render/draw_map.c \
+	src/render/texture_load.c \
+	src/map/map_load.c \
+	src/map/map_validate.c \
+	src/map/path_check.c \
+	src/map/path_utils.c \
+	src/utils/error_exit.c \
+	src/utils/str_utils.c \
+	src/utils/read_file.c \
+	src/utils/split_lines.c \
+	src/utils/path_utils.c \
+	src/utils/ft_printf.c \
 	src/utils/ft_memset.c
 
 OBJS := $(SRCS:src/%.c=$(BUILD_DIR)/%.o)

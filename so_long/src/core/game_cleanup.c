@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:06:14 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:28:40 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 15:25:01 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ static void	destroy_window_and_display(t_app *a)
 		mlx_destroy_window(a->mlx, a->win);
 		a->win = NULL;
 	}
-#ifdef __linux__
 	if (a->mlx)
 	{
 		mlx_destroy_display(a->mlx);
 		free(a->mlx);
 		a->mlx = NULL;
 	}
-#endif
 }
 
 static void	free_map_internal(t_map *m)
@@ -80,18 +78,12 @@ static void	free_map_internal(t_map *m)
 	}
 }
 
-void	game_cleanup(void)
+void	game_cleanup(t_app *a)
 {
-	t_app	*a;
-
-	a = app();
 	if (!a)
 		return ;
 	destroy_textures(a);
 	if (a->map)
-	{
 		free_map_internal(a->map);
-		a->map = NULL;
-	}
 	destroy_window_and_display(a);
 }

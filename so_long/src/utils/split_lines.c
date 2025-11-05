@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 14:34:09 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 15:55:44 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 15:08:57 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ char	**split_lines(char *text, size_t *line_count)
 	if (!text)
 		return (NULL);
 	count = count_lines(text);
+	if (count == 0)
+		return (free(text), NULL);
 	lines = malloc(sizeof(char *) * (count + 1));
 	if (!lines)
-		return (NULL);
+		return (free(text), NULL);
 	split_text(text, lines);
 	lines[count] = NULL;
 	*line_count = count;

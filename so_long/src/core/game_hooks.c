@@ -6,12 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:28:49 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:28:51 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 15:15:28 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/input.h"
 #include "../../include/game.h"
+#include "../../include/input.h"
 
 void	install_hooks(void)
 {

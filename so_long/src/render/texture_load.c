@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/11/03 14:46:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,18 @@ static int	load_one(void *mlx_ptr, t_img *out_image, char *file_path)
 	return (1);
 }
 
-bool	load_textures(void)
+int	load_textures(t_app *a)
 {
-	t_app	*app_ctx;
-
-	app_ctx = app();
-	if (!load_one(app_ctx->mlx, &app_ctx->tex.wall, "assets/textures/wall.xpm"))
-		return (false);
-	if (!load_one(app_ctx->mlx, &app_ctx->tex.floor, "assets/textures/floor.xpm"))
-		return (false);
-	if (!load_one(app_ctx->mlx, &app_ctx->tex.player, "assets/textures/player.xpm"))
-		return (false);
-	if (!load_one(app_ctx->mlx, &app_ctx->tex.col, "assets/textures/collect.xpm"))
-		return (false);
-	if (!load_one(app_ctx->mlx, &app_ctx->tex.exit_tile, "assets/textures/exit.xpm"))
-		return (false);
-	
-	app_ctx->tile_size = app_ctx->tex.wall.w;
-	
-	return (true);
+	if (!load_one(a->mlx, &a->tex.wall, "assets/textures/wall.xpm"))
+		return (0);
+	if (!load_one(a->mlx, &a->tex.floor, "assets/textures/floor.xpm"))
+		return (0);
+	if (!load_one(a->mlx, &a->tex.player, "assets/textures/player.xpm"))
+		return (0);
+	if (!load_one(a->mlx, &a->tex.col, "assets/textures/collect.xpm"))
+		return (0);
+	if (!load_one(a->mlx, &a->tex.exit_tile, "assets/textures/exit.xpm"))
+		return (0);
+	a->tile_size = a->tex.wall.w;
+	return (1);
 }

@@ -6,15 +6,14 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:26:45 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 17:26:57 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_H
 # define MAP_H
-# include <stdbool.h>
+
 # include <stddef.h>
-# include <stdint.h>
 
 typedef enum e_tile
 {
@@ -23,30 +22,37 @@ typedef enum e_tile
 	T_COL = 2,
 	T_EXIT = 3,
 	T_PLAYER = 4
-}			t_tile;
+}	t_tile;
 
+typedef struct s_point
+{
+	int	y;
+	int	x;
+}	t_point;
+
+/* map */
 typedef struct s_map
 {
 	char	**grid;
-	uint8_t	**tiles;
+	int	**tiles;
 	size_t	rows;
 	size_t	cols;
 	int		count_p;
 	int		count_e;
 	int		count_c;
-	int px, py;
-}			t_map;
+	int		px;
+	int		py;
+}	t_map;
 
 /* map_load.c */
-bool		load_map(const char *path, t_map *m);
-
+const char	*load_map(const char *path, t_map *m);
 /* map_validate.c */
-bool		validate_map(t_map *m);
-
+const char	*validate_map(t_map *m);
 /* path_check.c */
-bool		validate_map_reachable(const t_map *m);
+const char	*validate_map_reachable(const t_map *m);
 
-/* map_free.c */
-void		free_map(t_map *m);
+
+void	path_enqueue_neighbors(const t_map *m, int **vis,
+			t_point *queue, int *rear, t_point cur);
 
 #endif
