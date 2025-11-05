@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/camera.h"
-#include "../../include/game.h"
 #include "../../include/map.h"
 
 void	camera_setup_viewport(const t_map *map, t_camera *cam, int wanted_w,

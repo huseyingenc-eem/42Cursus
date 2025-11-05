@@ -16,7 +16,6 @@
 # include "../mlx/mlx.h"
 # include "camera.h"
 # include "map.h"
-# include <stdlib.h>
 
 typedef struct s_img
 {

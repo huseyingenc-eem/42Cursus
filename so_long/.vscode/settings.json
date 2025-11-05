@@ -5,6 +5,8 @@
 		"utils.h": "c",
 		"map.h": "c",
 		"fcntl.h": "c",
-		"render.h": "c"
+		"render.h": "c",
+		"input.h": "c",
+		"camera.h": "c"
 	}
 }

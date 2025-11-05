@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 15:58:11 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:04:06 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 17:56:30 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ struct	s_app;
 int		on_key_pressed(int keycode, void *ctx);
 int		on_window_close(void *ctx);
 
-void	move_up(struct s_app *a);
-void	move_down(struct s_app *a);
-void	move_left(struct s_app *a);
-void	move_right(struct s_app *a);
+void	try_move(struct s_app *a, int dx, int dy);
 
 #endif

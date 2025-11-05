@@ -6,13 +6,11 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:59:04 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 17:52:05 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/camera.h"
 #include "../../include/game.h"
-#include "../../include/map.h"
 #include "../../include/render.h"
 
 void	first_draw(t_app *a)

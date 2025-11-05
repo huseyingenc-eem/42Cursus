@@ -6,13 +6,11 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 15:23:19 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:09:21 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 17:52:05 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
-#include "../../include/camera.h"
-#include "../../include/render.h"
 
 static void	num_to_str(int num, char *str)
 {

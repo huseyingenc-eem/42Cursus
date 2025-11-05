@@ -6,12 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:25:19 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:16:56 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 18:01:40 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
 #include "../../include/input.h"
+#include <stdlib.h>
 
 int	on_key_pressed(int keycode, void *ctx)
 {
@@ -24,13 +25,13 @@ int	on_key_pressed(int keycode, void *ctx)
 		exit(0);
 	}
 	else if (keycode == KEY_W)
-		move_up(a);
+		try_move(a, 0, -1);
 	else if (keycode == KEY_S)
-		move_down(a);
+		try_move(a, 0, 1);
 	else if (keycode == KEY_A)
-		move_left(a);
+		try_move(a, -1, 0);
 	else if (keycode == KEY_D)
-		move_right(a);
+		try_move(a, 1, 0);
 	return (0);
 }
 
