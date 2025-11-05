@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:12:05 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:33:57 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 18:08:36 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ const char	*check_outer_walls(const t_map *m)
 	while (++c < m->cols)
 		if (m->tiles[0][c] != T_WALL
 			|| m->tiles[m->rows - 1][c] != T_WALL)
-			return ("Map must be surrounded by walls (top/bottom)");
+			return ("Map ust be surrounded by walls (top/bottom)");
 	r = -1;
 	while (++r < m->rows)
 		if (m->tiles[r][0] != T_WALL
