@@ -18,9 +18,13 @@ SRCS := \
 	src/render/camera.c \
 	src/render/mlx_boot.c \
 	src/render/draw_map.c \
+	src/render/draw_tiles.c \
+	src/render/draw_hud.c \
 	src/render/texture_load.c \
 	src/map/map_load.c \
 	src/map/map_validate.c \
+	src/map/map_validate_walls.c \
+	src/map/map_tiles.c \
 	src/map/path_check.c \
 	src/map/path_utils.c \
 	src/utils/error_exit.c \

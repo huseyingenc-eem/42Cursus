@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 00:00:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # define MAX_QUEUE 1000000
 #endif
 
-/* -- 1/5 -- */
 static void	init_visited_row(int *row, size_t cols)
 {
 	size_t	i;
@@ -31,10 +30,9 @@ static void	init_visited_row(int *row, size_t cols)
 		row[i] = FALSE;
 }
 
-/* -- 2/5 -- */
 static int	**alloc_visited(size_t rows, size_t cols)
 {
-	int	**vis;
+	int		**vis;
 	size_t	r;
 
 	if (rows > MAX_DIM || cols > MAX_DIM)
@@ -73,59 +71,53 @@ static void	free_visited(int **vis, size_t rows)
 	free(vis);
 }
 
-
-static int	bfs_search(const t_map *m, int **vis, t_point *queue)
+static int	bfs_search(t_bfs_ctx *ctx, const t_map *m)
 {
-	int	front;
-	int	rear;
-	int	collected;
-	int	exit_found;
+	int		front;
+	int		collected;
+	int		exit_found;
 	t_point	cur;
 
 	front = 0;
-	rear = 0;
 	collected = 0;
 	exit_found = FALSE;
-	queue[rear++] = (t_point){m->py, m->px};
-	vis[m->py][m->px] = TRUE;
-	while (front < rear)
+	ctx->queue[ctx->rear++] = (t_point){m->py, m->px};
+	ctx->visited[m->py][m->px] = TRUE;
+	while (front < ctx->rear)
 	{
-		cur = queue[front++];
+		cur = ctx->queue[front++];
 		if (m->tiles[cur.y][cur.x] == T_COL)
 			collected++;
 		if (m->tiles[cur.y][cur.x] == T_EXIT)
 			exit_found = TRUE;
-		path_enqueue_neighbors(m, vis, queue, &rear, cur);
+		path_enqueue_neighbors(ctx, cur);
 	}
-	ft_printf("Path check: %d/%d collectibles, exit=%s\n",
-		collected, m->count_c, exit_found ? "yes" : "no");
 	return (collected == m->count_c && exit_found);
 }
 
-/* -- 5/5 (public) -- */
 const char	*validate_map_reachable(const t_map *m)
 {
-	int			**vis;
-	t_point		*queue;
+	t_bfs_ctx	ctx;
 	size_t		qsz;
 	int			ok;
 
-	ft_printf("Pathfinding for %zu x %zu map...\n", m->rows, m->cols);
 	qsz = m->rows * m->cols;
 	if (qsz > MAX_QUEUE)
 		return ("Map too large for pathfinding");
-	vis = alloc_visited(m->rows, m->cols);
-	if (!vis)
+	ctx.visited = alloc_visited(m->rows, m->cols);
+	if (!ctx.visited)
 		return ("Cannot allocate visited array");
-	queue = (t_point *)malloc(sizeof(t_point) * qsz);
-	if (!queue)
+	ctx.queue = (t_point *)malloc(sizeof(t_point) * qsz);
+	if (!ctx.queue)
 	{
-		free_visited(vis, m->rows);
+		free_visited(ctx.visited, m->rows);
 		return ("Cannot allocate queue");
 	}
-	ok = bfs_search(m, vis, queue);
-	free(queue);
-	free_visited(vis, m->rows);
+	ctx.map = m;
+	ctx.rear = 0;
+	ok = bfs_search(&ctx, m);
+	free(ctx.queue);
+	free_visited(ctx.visited, m->rows);
 	if (!ok)
 		return ("Player cannot reach all collectibles or exit");
 	return (NULL);

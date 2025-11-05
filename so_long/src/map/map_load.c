@@ -6,13 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:45:55 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 17:33:39 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/map.h"
 #include "../../include/utils.h"
-#include <stdlib.h>
 
 const char	*load_map(const char *path, t_map *m)
 {

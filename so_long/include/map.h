@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:26:45 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ typedef struct s_point
 	int	x;
 }	t_point;
 
-/* map */
 typedef struct s_map
 {
 	char	**grid;
-	int	**tiles;
+	int		**tiles;
 	size_t	rows;
 	size_t	cols;
 	int		count_p;
@@ -44,15 +43,20 @@ typedef struct s_map
 	int		py;
 }	t_map;
 
-/* map_load.c */
+typedef struct s_bfs_ctx
+{
+	const t_map	*map;
+	int			**visited;
+	t_point		*queue;
+	int			rear;
+}	t_bfs_ctx;
+
 const char	*load_map(const char *path, t_map *m);
-/* map_validate.c */
 const char	*validate_map(t_map *m);
-/* path_check.c */
 const char	*validate_map_reachable(const t_map *m);
-
-
-void	path_enqueue_neighbors(const t_map *m, int **vis,
-			t_point *queue, int *rear, t_point cur);
+const char	*check_outer_walls(const t_map *m);
+const char	*alloc_tiles(t_map *m);
+int			tile_from_char(char ch, const char **err);
+void		path_enqueue_neighbors(t_bfs_ctx *ctx, t_point cur);
 
 #endif

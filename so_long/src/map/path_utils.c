@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 15:05:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 14:41:42 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static int	is_valid_move(const t_map *m, int **vis, int ny, int nx)
 	return (1);
 }
 
-void	path_enqueue_neighbors(const t_map *m, int **vis,
-			t_point *queue, int *rear, t_point cur)
+void	path_enqueue_neighbors(t_bfs_ctx *ctx, t_point cur)
 {
 	static const int	dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	int					d;
@@ -38,11 +37,11 @@ void	path_enqueue_neighbors(const t_map *m, int **vis,
 	{
 		ny = cur.y + dirs[d][0];
 		nx = cur.x + dirs[d][1];
-		if (is_valid_move(m, vis, ny, nx))
+		if (is_valid_move(ctx->map, ctx->visited, ny, nx))
 		{
-			vis[ny][nx] = 1;
-			queue[*rear] = (t_point){ny, nx};
-			(*rear)++;
+			ctx->visited[ny][nx] = 1;
+			ctx->queue[ctx->rear] = (t_point){ny, nx};
+			ctx->rear++;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:25:19 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 15:25:27 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/05 17:16:56 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	on_key_pressed(int keycode, void *ctx)
 
 int	on_window_close(void *ctx)
 {
-	t_app *a;
+	t_app	*a;
 
 	a = (t_app *)ctx;
 	game_cleanup(a);

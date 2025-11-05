@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   move_player.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/05 17:17:03 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/05 17:17:05 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/camera.h"
 #include "../../include/game.h"
 #include "../../include/map.h"
@@ -7,18 +19,18 @@
 
 static void	print_move_count(int moves)
 {
-    ft_printf("\033[H\033[2J");
-    ft_printf("Moves: %d\n", moves);
+	ft_printf("\033[H\033[2J");
+	ft_printf("Moves: %d\n", moves);
 }
 
 static void	collect_item(t_app *a, int nx, int ny)
 {
-    if (a->map->tiles[ny][nx] == T_COL)
-    {
-        a->map->tiles[ny][nx] = T_EMPTY;
-        a->map->count_c--;
-        ft_printf("Collectibles remaining: %d\n", a->map->count_c);
-    }
+	if (a->map->tiles[ny][nx] == T_COL)
+	{
+		a->map->tiles[ny][nx] = T_EMPTY;
+		a->map->count_c--;
+		ft_printf("Collectibles remaining: %d\n", a->map->count_c);
+	}
 }
 
 static void	check_exit(t_app *a, int nx, int ny)
@@ -84,8 +96,8 @@ void	move_left(t_app *a)
 
 void	move_right(t_app *a)
 {
-	int	nx;
-	int	ny;
+	int nx;
+	int ny;
 
 	nx = a->map->px + 1;
 	ny = a->map->py;
