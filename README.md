@@ -103,3 +103,5 @@ Standart `printf()` işlevinin çekirdek formatlayıcılarının (`cspdiuxX%`) y
 | **Minitalk**      | 01   | ✅ Tamamlandı | 100/100 | Sinyaller, PID, async              |
 | **so_long**       | 01   | ✅ Tamamlandı | 100/100 | MiniLibX, input, çarpışma          |
 | **push_swap**     | 02   | ✅ Tamamlandı | 100/100 | Algoritma, optimizasyon            |
+
+
