@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
+/*   ops_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/10 15:49:51 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:50:16 by hgenc            ###   ########.fr       */
+/*   Created: 2025/11/10 15:48:10 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/10 15:53:07 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdlib.h>
 #include <unistd.h>
 
-static void	free_stack(t_node **top)
+static void	do_push(t_node **from, t_node **to)
 {
-	t_node	*cur;
-	t_node	*nx;
+	t_node	*tmp;
 
-	if (!top || !*top)
+	if (!from || !*from)
 		return ;
-	cur = *top;
-	while (cur)
-	{
-		nx = cur->next;
-		free(cur);
-		cur = nx;
-	}
-	*top = NULL;
+	tmp = *from;
+	*from = (*from)->next;
+	if (*from)
+		(*from)->prev = NULL;
+	tmp->next = *to;
+	tmp->prev = NULL;
+	if (*to)
+		(*to)->prev = tmp;
+	*to = tmp;
 }
 
-void	free_all(t_ps *ps)
+void	pa(t_ps *ps)
 {
-	if (!ps)
-		return ;
-	free_stack(&ps->a);
-	free_stack(&ps->b);
+	do_push(&ps->b, &ps->a);
+	ps->size_b--;
+	ps->size_a++;
+	ps_putstr_fd("pa\n", 1);
 }
 
-void	error_exit(t_ps *ps)
+void	pb(t_ps *ps)
 {
-	free_all(ps);
-	ps_putstr_fd("Error\n", 2);
-	exit(1);
+	do_push(&ps->a, &ps->b);
+	ps->size_a--;
+	ps->size_b++;
+	ps_putstr_fd("pb\n", 1);
 }

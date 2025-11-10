@@ -1,43 +1,47 @@
-CC       := cc
-CFLAGS   := -Wall -Wextra -Werror
-INCS     := -I include
-DEPFLAGS := -MMD -MP
+NAME		= push_swap
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -f
 
-NAME      := push_swap
+SRCDIR		= src
+INCDIR		= include
+BUILDDIR	= build
 
-BUILD_DIR := build
+SRCS		= $(SRCDIR)/main.c \
+			  $(SRCDIR)/memory.c \
+			  $(SRCDIR)/normalize.c \
+			  $(SRCDIR)/ops_swap.c \
+			  $(SRCDIR)/ops_push.c \
+			  $(SRCDIR)/ops_rotate.c \
+			  $(SRCDIR)/ops_reverse_rotate.c \
+			  $(SRCDIR)/parse.c \
+			  $(SRCDIR)/parse_utils.c \
+			  $(SRCDIR)/small_sort.c \
+			  $(SRCDIR)/small_sort_utils.c \
+			  $(SRCDIR)/solver_radix.c \
+			  $(SRCDIR)/stack.c \
+			  $(SRCDIR)/utils.c \
+			  $(SRCDIR)/utils2.c
 
-SRCS := \
-	src/main.c \
-	src/parse.c \
-	src/normalize.c \
-	src/stack.c \
-	src/ops.c \
-	src/small_sort.c \
-	src/solver_radix.c \
-	src/utils.c \
-	src/memory.c
+OBJS		= $(SRCS:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 
-OBJS := $(addprefix $(BUILD_DIR)/,$(SRCS:.c=.o))
-DEPS := $(OBJS:.o=.d)
+HEADERS		= $(INCDIR)/push_swap.h
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(BUILD_DIR)/%.o: %.c
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCS) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
 clean:
-	@rm -rf $(BUILD_DIR)
+	$(RM) -r $(BUILDDIR)
 
 fclean: clean
-	@rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
-
--include $(DEPS)
 
 .PHONY: all clean fclean re

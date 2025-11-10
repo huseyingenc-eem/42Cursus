@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgenc@student.42kocaeli.com.tr <hgenc@s    +#+  +:+       +#+        */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 16:42:48 by hgenc@stude       #+#    #+#             */
-/*   Updated: 2025/11/08 16:42:48 by hgenc@stude      ###   ########.fr       */
+/*   Updated: 2025/11/10 15:57:47 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		parse_args(t_ps *ps, int argc, char **argv);
 
 char	**ps_split_ws(const char *s);
 void	ps_free_split(char **arr);
-
+int		has_duplicate(int *vals, int count);
 
 void	normalize_indices(t_ps *ps);
 
@@ -73,6 +73,9 @@ void	rrb(t_ps *ps);
 void	rrr(t_ps *ps);
 
 void	sort_small(t_ps *ps);
+void	sort_two(t_ps *ps);
+void	sort_three(t_ps *ps);
+int		find_min_pos(t_node *top);
 
 void	solve_radix(t_ps *ps);
 

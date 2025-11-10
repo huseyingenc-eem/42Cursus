@@ -1,50 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solver_radix.c                                     :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/10 15:49:41 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:49:42 by hgenc            ###   ########.fr       */
+/*   Created: 2025/11/10 15:49:30 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/10 15:57:50 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	get_max_bits(int max_num)
+int	ps_is_space(char c)
 {
-	int	bits;
-
-	bits = 0;
-	while ((max_num >> bits) != 0)
-		bits++;
-	return (bits);
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
-void	solve_radix(t_ps *ps)
+int	ps_is_digit(char c)
 {
-	int	max_bits;
-	int	i;
-	int	j;
-	int	size;
+	return (c >= '0' && c <= '9');
+}
 
-	max_bits = get_max_bits(ps->size_a - 1);
-	i = 0;
-	while (i < max_bits)
+int	is_sorted(t_node *top)
+{
+	if (!top)
+		return (1);
+	while (top->next)
 	{
-		size = ps->size_a;
-		j = 0;
-		while (j < size)
-		{
-			if (((ps->a->idx >> i) & 1) == 1)
-				ra(ps);
-			else
-				pb(ps);
-			j++;
-		}
-		while (ps->size_b > 0)
-			pa(ps);
-		i++;
+		if (top->val > top->next->val)
+			return (0);
+		top = top->next;
 	}
+	return (1);
 }

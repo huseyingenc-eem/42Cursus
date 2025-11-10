@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 15:49:30 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/10 16:00:27 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 #include <unistd.h>
 
@@ -20,15 +32,31 @@ void	ps_putstr_fd(const char *s, int fd)
 	(void)write(fd, s, ps_strlen(s));
 }
 
-
-int	ps_is_space(char c)
+static int	parse_sign(const char **s, long long *sign)
 {
-	return (c == ' ' || (c >= 9 && c <= 13));
+	*sign = 1;
+	if (**s == '+' || **s == '-')
+	{
+		if (**s == '-')
+			*sign = -1LL;
+		(*s)++;
+	}
+	return (1);
 }
 
-int	ps_is_digit(char c)
+static int	parse_digits(const char **s, long long *acc)
 {
-	return (c >= '0' && c <= '9');
+	int	digits;
+
+	*acc = 0;
+	digits = 0;
+	while (ps_is_digit(**s))
+	{
+		*acc = *acc * 10 + (**s - '0');
+		digits = 1;
+		(*s)++;
+	}
+	return (digits);
 }
 
 int	ps_atoi_safe(const char *s, int *out)
@@ -40,37 +68,15 @@ int	ps_atoi_safe(const char *s, int *out)
 	if (!s || !out)
 		return (0);
 	while (ps_is_space(*s))
-		++s;
-	sign = 1;
-	if (*s == '+' || *s == '-')
-		sign = (*s++ == '-') ? -1LL : 1LL;
-	acc = 0;
-	digits = 0;
-	while (ps_is_digit(*s))
-	{
-		acc = acc * 10 + (*s - '0');
-		digits = 1;
-		++s;
-	}
+		s++;
+	parse_sign(&s, &sign);
+	digits = parse_digits(&s, &acc);
 	while (ps_is_space(*s))
-		++s;
+		s++;
 	if (!digits || *s != '\0')
 		return (0);
 	if (sign * acc > (long long)INT_MAX || sign * acc < (long long)INT_MIN)
 		return (0);
 	*out = (int)(sign * acc);
-	return (1);
-}
-
-int	is_sorted(t_node *top)
-{
-	if (!top)
-		return (1);
-	while (top->next)
-	{
-		if (top->val > top->next->val)
-			return (0);
-		top = top->next;
-	}
 	return (1);
 }
