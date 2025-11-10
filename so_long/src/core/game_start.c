@@ -6,13 +6,14 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:29:01 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:45:04 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:54:07 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
 #include "../../include/input.h"
 #include "../../include/render.h"
+#include "../../mlx/mlx.h"
 
 static void	install_hooks(t_app *a)
 {

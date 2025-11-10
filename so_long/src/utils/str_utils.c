@@ -6,11 +6,11 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 14:34:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:18:13 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:48:28 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/utils.h"
+#include <stddef.h>
 
 size_t	ft_strlen(const char *str)
 {

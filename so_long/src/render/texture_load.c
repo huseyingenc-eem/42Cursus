@@ -6,11 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/11/05 16:25:29 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:54:44 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
+#include "../../mlx/mlx.h"
 
 static int	load_one(void *mlx_ptr, t_img *out_image, char *file_path)
 {

@@ -6,13 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:20:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:42:40 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/map.h"
 #include "../../include/utils.h"
-#include <stdlib.h>
 
 static const char	*check_rectangular(const t_map *m)
 {

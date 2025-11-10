@@ -6,14 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 14:28:31 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:02:56 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:53:09 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_H
 # define GAME_H
 
-# include "../mlx/mlx.h"
 # include "camera.h"
 # include "map.h"
 
@@ -45,7 +44,6 @@ typedef struct s_app
 }				t_app;
 
 int				game_start(t_app *app_instance);
-void			game_loop(t_app *app_instance);
 void			game_cleanup(t_app *app_instance);
 
 #endif

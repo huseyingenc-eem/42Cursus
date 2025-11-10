@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:26:45 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:55:15 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MAP_H
 
 # include <stddef.h>
+
+# define MAX_DIM 2000
+# define MAX_QUEUE 1000000
 
 typedef enum e_tile
 {

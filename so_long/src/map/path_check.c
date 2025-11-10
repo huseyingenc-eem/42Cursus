@@ -6,20 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 00:00:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:44:14 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/map.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
-
-#ifndef MAX_DIM
-# define MAX_DIM 2000
-#endif
-#ifndef MAX_QUEUE
-# define MAX_QUEUE 1000000
-#endif
 
 static void	init_visited_row(int *row, size_t cols)
 {

@@ -6,12 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:59:04 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:52:05 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:54:30 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
 #include "../../include/render.h"
+#include "../../mlx/mlx.h"
 
 void	put_img(t_app *a, t_img img, int scr_x, int scr_y)
 {

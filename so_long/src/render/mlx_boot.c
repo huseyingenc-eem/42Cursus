@@ -6,12 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 17:08:50 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:22:25 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:54:23 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/game.h"
 #include "../../include/render.h"
+#include "../../mlx/mlx.h"
 
 int	init_window(t_app *a)
 {

@@ -6,11 +6,10 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 14:34:23 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/03 15:44:01 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 16:47:08 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/utils.h"
 #include <unistd.h>
 #include <stdarg.h>
 
