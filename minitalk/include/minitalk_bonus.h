@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 19:20:44 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/18 21:10:47 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINITALK_BONUS_H
 # define MINITALK_BONUS_H
 
@@ -11,26 +23,19 @@
 
 typedef struct s_server
 {
-	unsigned char	character;
-	int				bit_count;
-	pid_t			client_pid;
+	int				bit_ctr;
+	unsigned char	temp_char;
 }					t_server;
 
 typedef struct s_client
 {
-	int				received_signal;
-	pid_t			server_pid;
+	int				ack;
 }					t_client;
 
-void				signal_handler(int signal, siginfo_t *info, void *context);
-void				client_handler(int signal);
-void				send_bit(pid_t pid, int bit);
-void				send_char(pid_t pid, unsigned char c);
-void				send_string(pid_t pid, char *str);
-void				print_pid(void);
-void				ft_putchar(char c);
-void				ft_putstr(char *str);
-void				ft_putnbr(int n);
-int					ft_atoi(const char *str);
+int		ft_atoi_bonus(const char *str);
+void	ft_putstr_fd_bonus(char *s, int fd);
+void	ft_putnbr_fd_bonus(int n, int fd);
+void	ft_putchar_fd_bonus(char c, int fd);
+void	ft_error_exit_bonus(char *msg);
 
 #endif

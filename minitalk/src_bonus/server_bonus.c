@@ -1,77 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 19:20:32 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/18 21:17:35 by hgenc            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk_bonus.h"
 
-static t_server	g_server;
-
-static void	process_bit(int signal)
+static void	handle_char(t_server *server, siginfo_t *info)
 {
-    if (signal == SIGUSR1)
-        g_server.character <<= 1;
-    else if (signal == SIGUSR2)
-        g_server.character = (g_server.character << 1) | 1;
+	if (server->temp_char == '\0')
+	{
+		ft_putchar_fd_bonus('\n', 1);
+		kill(info->si_pid, SIGUSR2);
+	}
+	else
+		ft_putchar_fd_bonus(server->temp_char, 1);
+	server->bit_ctr = 0;
+	server->temp_char = 0;
+	kill(info->si_pid, SIGUSR1);
 }
 
-static void	handle_complete_character(void)
+static void	handle_signal(int sig, siginfo_t *info, void *context)
 {
-    static int	byte_count = 0;
+	static t_server	server = {0, 0};
+	static pid_t	client_pid = 0;
 
-    if (g_server.character == 0)
-    {
-        ft_putchar('\n');
-        ft_putnbr(byte_count);
-        ft_putstr(" bytes received\n");
-        if (kill(g_server.client_pid, SIGUSR2) == -1)
-            exit(1);
-        byte_count = 0;
-    }
-    else
-    {
-        ft_putchar(g_server.character);
-        byte_count++;
-        if (kill(g_server.client_pid, SIGUSR1) == -1)
-            exit(1);
-    }
-    g_server.character = 0;
-    g_server.bit_count = 0;
+	(void)context;
+	if (client_pid != info->si_pid)
+	{
+		client_pid = info->si_pid;
+		server.bit_ctr = 0;
+		server.temp_char = 0;
+	}
+	if (sig == SIGUSR1)
+		server.temp_char |= (1 << (7 - server.bit_ctr));
+	server.bit_ctr++;
+	if (server.bit_ctr == 8)
+		handle_char(&server, info);
+	else
+		kill(info->si_pid, SIGUSR1);
 }
 
-void	signal_handler(int signal, siginfo_t *info, void *context)
+static void	print_pid(void)
 {
-    (void)context;
-    g_server.client_pid = info->si_pid;
-    process_bit(signal);
-    g_server.bit_count++;
-    if (g_server.bit_count == 8)
-        handle_complete_character();
-    else if (kill(g_server.client_pid, SIGUSR1) == -1)
-        exit(1);
-}
+	pid_t	pid;
 
-static void	setup_and_run(void)
-{
-    struct sigaction	sa;
-    pid_t				pid;
-
-    pid = getpid();
-    ft_putstr("Server PID: ");
-    ft_putnbr(pid);
-    ft_putstr("\nWaiting for messages...\n");
-    sigemptyset(&sa.sa_mask);
-    sigaddset(&sa.sa_mask, SIGUSR1);
-    sigaddset(&sa.sa_mask, SIGUSR2);
-    sa.sa_flags = SA_SIGINFO | SA_RESTART;
-    sa.sa_sigaction = signal_handler;
-    if (sigaction(SIGUSR1, &sa, NULL) == -1 || 
-        sigaction(SIGUSR2, &sa, NULL) == -1)
-        exit(1);
-    while (1)
-        pause();
+	pid = getpid();
+	ft_putstr_fd_bonus("Server PID: ", 1);
+	ft_putnbr_fd_bonus(pid, 1);
+	ft_putchar_fd_bonus('\n', 1);
 }
 
 int	main(void)
 {
-    g_server.character = 0;
-    g_server.bit_count = 0;
-    g_server.client_pid = 0;
-    setup_and_run();
-    return (0);
+	struct sigaction	sa;
+
+	print_pid();
+	sa.sa_sigaction = handle_signal;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		ft_error_exit_bonus("Failed to set SIGUSR1");
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+		ft_error_exit_bonus("Failed to set SIGUSR2");
+	while (1)
+		pause();
+	return (0);
 }

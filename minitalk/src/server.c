@@ -1,57 +1,66 @@
 /* ************************************************************************** */
-/* */
-/* :::      ::::::::   */
-/* server.c                                           :+:      :+:    :+:   */
-/* +:+ +:+         +:+     */
-/* By: 42Student <student@42.fr>                  +#+  +:+       +#+        */
-/* +#+#+#+#+#+   +#+           */
-/* Created: 2025/11/17 10:00:00 by 42Student         #+#    #+#             */
-/* Updated: 2025/11/17 10:00:00 by 42Student        ###   ########.fr       */
-/* */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 19:20:24 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/18 21:28:42 by hgenc            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+#include <signal.h>
 
-/*
-** Server için global değişkene ihtiyacımız yok gibi görünse de, 
-** Norminette kuralları gereği statik değişkenleri fonksiyon içinde tutmak 
-** daha temizdir. Ancak sinyal işleyicilerde veri bütünlüğü için
-** bu yapıyı kullanıyoruz.
-*/
+static void	handle_char(t_server *server)
+{
+	if (server->temp_char == '\0')
+	{
+		ft_putchar_fd('\n', 1);
+	}
+	else
+		ft_putchar_fd(server->temp_char, 1);
+	server->bit_ctr = 0;
+	server->temp_char = 0;
+}
 
 static void	handle_signal(int sig, siginfo_t *info, void *context)
 {
-	static int				bit_ctr = 0;
-	static unsigned char	temp_char = 0;
+	static t_server	server = {0, 0};
+	static pid_t	client_pid = 0;
 
 	(void)context;
-	if (sig == SIGUSR1)
-		temp_char |= (1 << (7 - bit_ctr));
-	bit_ctr++;
-	if (bit_ctr == 8)
+	if (client_pid != info->si_pid)
 	{
-		if (temp_char == '\0')
-		{
-			ft_putchar_fd('\n', 1);
-			kill(info->si_pid, SIGUSR2); // Mesaj bitti onayı
-		}
-		else
-			ft_putchar_fd(temp_char, 1);
-		bit_ctr = 0;
-		temp_char = 0;
+		client_pid = info->si_pid;
+		server.bit_ctr = 0;
+		server.temp_char = 0;
 	}
-	kill(info->si_pid, SIGUSR1); // "Bir sonraki biti gönder" onayı
+	if (sig == SIGUSR1)
+		server.temp_char |= (1 << (7 - server.bit_ctr));
+	if (kill(info->si_pid, SIGUSR1) == -1)
+		ft_error_exit("Failed to send acknowledgement signal");
+	server.bit_ctr++;
+	if (server.bit_ctr == 8)
+		handle_char(&server);
 }
 
-int	main(void)
+static void	print_pid(void)
 {
-	struct sigaction	sa;
-	pid_t				pid;
+	pid_t	pid;
 
 	pid = getpid();
 	ft_putstr_fd("Server PID: ", 1);
 	ft_putnbr_fd(pid, 1);
 	ft_putchar_fd('\n', 1);
+}
+
+int	main(void)
+{
+	struct sigaction	sa;
+
+	print_pid();
 	sa.sa_sigaction = handle_signal;
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);

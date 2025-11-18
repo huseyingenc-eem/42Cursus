@@ -1,61 +1,64 @@
-CC      := cc
-CFLAGS  := -Wall -Wextra -Werror
-INCDIR  := include
-INCS    := -I$(INCDIR)
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror
+RM      = rm -f
 
+INCDIR  = include
+SRCDIR  = src
+SRCDIR_B= src_bonus
+OBJDIR  = build
 
-SERVER      := server
-CLIENT      := client
-SERVER_B    := server_bonus
-CLIENT_B    := client_bonus
+INCS    = -I$(INCDIR)
 
+NAME            = server
+CLIENT          = client
+NAME_BONUS      = server_bonus
+CLIENT_BONUS    = client_bonus
 
-SRCDIR      := src
-SRCS_COMMON := $(SRCDIR)/utils.c
+SRCS_SERVER     = $(SRCDIR)/server.c
+SRCS_CLIENT     = $(SRCDIR)/client.c
+SRCS_UTILS      = $(SRCDIR)/utils.c
 
-SRCS_SERVER := $(SRCDIR)/server.c   $(SRCS_COMMON)
-SRCS_CLIENT := $(SRCDIR)/client.c   $(SRCS_COMMON)
+SRCS_SERVER_B   = $(SRCDIR_B)/server_bonus.c
+SRCS_CLIENT_B   = $(SRCDIR_B)/client_bonus.c
+SRCS_UTILS_B    = $(SRCDIR_B)/utils_bonus.c
 
-SRCDIR_B    := src_bonus
-SRCS_SERVER_B := $(SRCDIR_B)/server_bonus.c $(SRCS_COMMON)
-SRCS_CLIENT_B := $(SRCDIR_B)/client_bonus.c $(SRCS_COMMON)
+OBJS_SERVER     = $(OBJDIR)/server.o $(OBJDIR)/utils.o
+OBJS_CLIENT     = $(OBJDIR)/client.o $(OBJDIR)/utils.o
 
-
-OBJDIR      := build
-OBJS_SERVER := $(SRCS_SERVER:%.c=$(OBJDIR)/%.o)
-OBJS_CLIENT := $(SRCS_CLIENT:%.c=$(OBJDIR)/%.o)
-OBJS_SERVER_B := $(SRCS_SERVER_B:%.c=$(OBJDIR)/%.o)
-OBJS_CLIENT_B := $(SRCS_CLIENT_B:%.c=$(OBJDIR)/%.o)
+OBJS_SERVER_B   = $(OBJDIR)/server_bonus.o $(OBJDIR)/utils_bonus.o
+OBJS_CLIENT_B   = $(OBJDIR)/client_bonus.o $(OBJDIR)/utils_bonus.o
 
 .PHONY: all bonus clean fclean re
 
-all: $(SERVER) $(CLIENT)
+all: $(NAME) $(CLIENT)
 
-bonus: $(SERVER_B) $(CLIENT_B)
+bonus: $(NAME_BONUS) $(CLIENT_BONUS)
 
-$(OBJDIR)/%.o: %.c | $(OBJDIR)
-	@mkdir -p $(dir $@)
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
-$(SERVER): $(OBJS_SERVER)
+$(OBJDIR)/%_bonus.o: $(SRCDIR_B)/%_bonus.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+
+$(NAME): $(OBJS_SERVER)
 	$(CC) $(CFLAGS) $(INCS) $^ -o $@
 
 $(CLIENT): $(OBJS_CLIENT)
 	$(CC) $(CFLAGS) $(INCS) $^ -o $@
 
-$(SERVER_B): $(OBJS_SERVER_B)
+$(NAME_BONUS): $(OBJS_SERVER_B)
 	$(CC) $(CFLAGS) $(INCS) $^ -o $@
 
-$(CLIENT_B): $(OBJS_CLIENT_B)
+$(CLIENT_BONUS): $(OBJS_CLIENT_B)
 	$(CC) $(CFLAGS) $(INCS) $^ -o $@
-
-$(OBJDIR):
-	@mkdir -p $(OBJDIR)
 
 clean:
-	@rm -rf $(OBJDIR)
+	$(RM) -r $(OBJDIR)
 
 fclean: clean
-	@rm -f $(SERVER) $(CLIENT) $(SERVER_B) $(CLIENT_B)
+	$(RM) $(NAME) $(CLIENT) $(NAME_BONUS) $(CLIENT_BONUS)
 
 re: fclean all
