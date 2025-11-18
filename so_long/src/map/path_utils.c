@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 15:05:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 16:59:17 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 09:59:44 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_valid_move(const t_map *m, int **vis, int ny, int nx)
 		return (0);
 	if (vis[ny][nx])
 		return (0);
-	if (m->tiles[ny][nx] == T_WALL)
+	if (m->tiles[ny][nx] == t_wall)
 		return (0);
 	return (1);
 }

@@ -6,14 +6,14 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 17:02:06 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:52:03 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 12:49:49 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
-struct	s_map;
+# include "map.h"
 
 typedef struct s_camera
 {

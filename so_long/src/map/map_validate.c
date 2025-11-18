@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:20:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:42:40 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 09:58:08 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,42 +26,42 @@ static const char	*check_rectangular(const t_map *m)
 	return (NULL);
 }
 
-static void	count_tile(t_map *m, int tile, size_t r, size_t c)
+static void	count_tile(t_map *m, int tile, size_t row, size_t col)
 {
-	if (tile == T_PLAYER)
+	if (tile == t_player)
 	{
 		m->count_p++;
-		m->px = c;
-		m->py = r;
+		m->px = col;
+		m->py = row;
 	}
-	else if (tile == T_EXIT)
+	else if (tile == t_exit)
 		m->count_e++;
-	else if (tile == T_COL)
+	else if (tile == t_col)
 		m->count_c++;
 }
 
-static const char	*fill_tiles_and_count(t_map *m)
+static const char	*fill_tiles_and_count(t_map *map)
 {
-	size_t		r;
-	size_t		c;
-	int			t;
-	const char	*err;
+	size_t		row;
+	size_t		col;
+	int			tile;
+	const char	*error;
 
-	m->count_p = 0;
-	m->count_e = 0;
-	m->count_c = 0;
-	r = -1;
-	while (++r < m->rows)
+	map->count_p = 0;
+	map->count_e = 0;
+	map->count_c = 0;
+	row = -1;
+	while (++row < map->rows)
 	{
-		c = -1;
-		while (++c < m->cols)
+		col = -1;
+		while (++col < map->cols)
 		{
-			err = NULL;
-			t = tile_from_char(m->grid[r][c], &err);
-			if (err)
-				return (err);
-			m->tiles[r][c] = t;
-			count_tile(m, t, r, c);
+			error = NULL;
+			tile = tile_from_char(map->grid[row][col], &error);
+			if (error)
+				return (error);
+			map->tiles[row][col] = tile;
+			count_tile(map, tile, row, col);
 		}
 	}
 	return (NULL);

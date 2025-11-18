@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 00:00:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:44:14 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 09:58:58 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ static int	bfs_search(t_bfs_ctx *ctx, const t_map *m)
 	while (front < ctx->rear)
 	{
 		cur = ctx->queue[front++];
-		if (m->tiles[cur.y][cur.x] == T_COL)
+		if (m->tiles[cur.y][cur.x] == t_col)
 			collected++;
-		if (m->tiles[cur.y][cur.x] == T_EXIT)
+		if (m->tiles[cur.y][cur.x] == t_exit)
 			exit_found = TRUE;
 		path_enqueue_neighbors(ctx, cur);
 	}
@@ -95,8 +95,6 @@ const char	*validate_map_reachable(const t_map *m)
 	int			ok;
 
 	qsz = m->rows * m->cols;
-	if (qsz > MAX_QUEUE)
-		return ("Map too large for pathfinding");
 	ctx.visited = alloc_visited(m->rows, m->cols);
 	if (!ctx.visited)
 		return ("Cannot allocate visited array");

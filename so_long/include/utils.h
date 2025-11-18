@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 17:02:24 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/05 17:03:55 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 12:58:40 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 size_t	ft_strlen(const char *str);
 int		ft_strncmp(const char *str1, const char *str2, size_t n);
-void	*ft_memset(void *b, int c, size_t len);
 char	*read_file(const char *path);
 char	**split_lines(char *text, size_t *line_count);
 int		has_ber_extension(const char *path);

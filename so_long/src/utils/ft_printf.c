@@ -6,12 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 14:34:23 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:47:08 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/11 15:47:05 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 static int	ft_putchar(char c)
 {
@@ -32,17 +32,19 @@ static int	ft_putstr(char *s)
 
 static int	ft_putnbr(long n)
 {
-	int	len;
+	int		len;
+	long	num;
 
 	len = 0;
-	if (n < 0)
+	num = n;
+	if (num < 0)
 	{
 		len += ft_putchar('-');
-		n = -n;
+		num = -num;
 	}
-	if (n >= 10)
-		len += ft_putnbr(n / 10);
-	len += ft_putchar((n % 10) + '0');
+	if (num >= 10)
+		len += ft_putnbr(num / 10);
+	len += ft_putchar((num % 10) + '0');
 	return (len);
 }
 

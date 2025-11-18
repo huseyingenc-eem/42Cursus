@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:00:00 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:36:12 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 09:58:44 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ const char	*alloc_tiles(t_map *m)
 {
 	size_t	r;
 
-	if (m->rows > 2000 || m->cols > 2000)
-		return ("Map too large");
 	m->tiles = (int **)malloc(sizeof(int *) * m->rows);
 	if (!m->tiles)
 		return ("Allocation failed (tiles)");
@@ -38,15 +36,15 @@ const char	*alloc_tiles(t_map *m)
 int	tile_from_char(char ch, const char **err)
 {
 	if (ch == '1')
-		return (T_WALL);
+		return (t_wall);
 	if (ch == '0')
-		return (T_EMPTY);
+		return (t_empty);
 	if (ch == 'C')
-		return (T_COL);
+		return (t_col);
 	if (ch == 'E')
-		return (T_EXIT);
+		return (t_exit);
 	if (ch == 'P')
-		return (T_PLAYER);
+		return (t_player);
 	*err = "Invalid character in map";
-	return (T_WALL);
+	return (t_wall);
 }

@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:29:01 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:54:07 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 12:52:21 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	game_start(t_app *a)
 	if (!init_window(a))
 		return (0);
 	camera_follow(a->map, &a->camera);
-	first_draw(a);
+	draw_map(a);
 	install_hooks(a);
 	mlx_loop(a->mlx);
 	return (1);

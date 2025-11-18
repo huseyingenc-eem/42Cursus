@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 17:26:45 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 16:55:15 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/14 09:56:41 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 # include <stddef.h>
 
 # define MAX_DIM 2000
-# define MAX_QUEUE 1000000
+# define MAX_QUEUE 4000000
 
 typedef enum e_tile
 {
-	T_WALL = 0,
-	T_EMPTY = 1,
-	T_COL = 2,
-	T_EXIT = 3,
-	T_PLAYER = 4
+	t_wall,
+	t_empty,
+	t_col,
+	t_exit,
+	t_player
 }	t_tile;
 
 typedef struct s_point
