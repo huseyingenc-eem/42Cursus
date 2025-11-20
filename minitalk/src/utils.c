@@ -10,9 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include <unistd.h>
 #include <stdlib.h>
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (!s)
+		return ;
+	while (*s)
+	{
+		ft_putchar_fd(*s, fd);
+		s++;
+	}
+}
 
 int	ft_atoi(const char *str)
 {
@@ -43,22 +58,6 @@ void	ft_error_exit(char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 	exit(1);
-}
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	if (!s)
-		return ;
-	while (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		s++;
-	}
 }
 
 void	ft_putnbr_fd(int n, int fd)

@@ -22,7 +22,7 @@ static int	count_words(const char *s)
 	in_word = 0;
 	while (*s)
 	{
-		if (ps_is_space(*s))
+		if (ft_is_space(*s))
 			in_word = 0;
 		else if (!in_word)
 		{
@@ -37,15 +37,15 @@ static int	count_words(const char *s)
 static char	*extract_word(const char **s)
 {
 	const char	*start;
-	int			len;
+	size_t		len;
 	char		*word;
-	int			i;
+	size_t		i;
 
-	while (ps_is_space(**s))
+	while (ft_is_space(**s))
 		(*s)++;
 	start = *s;
 	len = 0;
-	while ((*s)[len] && !ps_is_space((*s)[len]))
+	while ((*s)[len] && !ft_is_space((*s)[len]))
 		len++;
 	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)

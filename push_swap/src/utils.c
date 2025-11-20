@@ -13,7 +13,7 @@
 #include "push_swap.h"
 #include <unistd.h>
 
-size_t	ps_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -25,11 +25,11 @@ size_t	ps_strlen(const char *s)
 	return (i);
 }
 
-void	ps_putstr_fd(const char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	if (!s)
 		return ;
-	(void)write(fd, s, ps_strlen(s));
+	write(fd, s, ft_strlen(s));
 }
 
 static int	parse_sign(const char **s, long long *sign)
@@ -50,7 +50,7 @@ static int	parse_digits(const char **s, long long *acc)
 
 	*acc = 0;
 	digits = 0;
-	while (ps_is_digit(**s))
+	while (ft_is_digit(**s))
 	{
 		*acc = *acc * 10 + (**s - '0');
 		digits = 1;
@@ -59,7 +59,7 @@ static int	parse_digits(const char **s, long long *acc)
 	return (digits);
 }
 
-int	ps_atoi_safe(const char *s, int *out)
+int	ft_atoi(const char *s, int *out)
 {
 	long long	sign;
 	long long	acc;
@@ -67,15 +67,15 @@ int	ps_atoi_safe(const char *s, int *out)
 
 	if (!s || !out)
 		return (0);
-	while (ps_is_space(*s))
+	while (ft_is_space(*s))
 		s++;
 	parse_sign(&s, &sign);
 	digits = parse_digits(&s, &acc);
-	while (ps_is_space(*s))
+	while (ft_is_space(*s))
 		s++;
 	if (!digits || *s != '\0')
 		return (0);
-	if (sign * acc > (long long)INT_MAX || sign * acc < (long long)INT_MIN)
+	if (sign * acc > (long long)INT_MAXX || sign * acc < (long long)INT_MINN)
 		return (0);
 	*out = (int)(sign * acc);
 	return (1);

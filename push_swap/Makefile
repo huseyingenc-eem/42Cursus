@@ -8,20 +8,19 @@ INCDIR		= include
 BUILDDIR	= build
 
 SRCS		= $(SRCDIR)/main.c \
-			  $(SRCDIR)/memory.c \
-			  $(SRCDIR)/normalize.c \
-			  $(SRCDIR)/ops_swap.c \
-			  $(SRCDIR)/ops_push.c \
-			  $(SRCDIR)/ops_rotate.c \
-			  $(SRCDIR)/ops_reverse_rotate.c \
-			  $(SRCDIR)/parse.c \
-			  $(SRCDIR)/parse_utils.c \
-			  $(SRCDIR)/small_sort.c \
-			  $(SRCDIR)/small_sort_utils.c \
-			  $(SRCDIR)/solver_radix.c \
-			  $(SRCDIR)/stack.c \
 			  $(SRCDIR)/utils.c \
-			  $(SRCDIR)/utils2.c
+			  $(SRCDIR)/utils2.c \
+			  $(SRCDIR)/operations/ops_push.c \
+			  $(SRCDIR)/operations/ops_reverse_rotate.c \
+			  $(SRCDIR)/operations/ops_rotate.c \
+			  $(SRCDIR)/operations/ops_swap.c \
+			  $(SRCDIR)/parse/parse.c \
+			  $(SRCDIR)/parse/parse_utils.c \
+			  $(SRCDIR)/solver/normalize.c \
+			  $(SRCDIR)/solver/small_sort.c \
+			  $(SRCDIR)/solver/solver_radix.c \
+			  $(SRCDIR)/stack/memory.c \
+			  $(SRCDIR)/stack/stack.c
 
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 

@@ -1,51 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops_swap.c                                         :+:      :+:    :+:   */
+/*   ops_rotate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:48:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:53:05 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 15:53:08 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <unistd.h>
 
-static void	do_swap(t_node **top)
+static void	do_rotate(t_node **top)
 {
 	t_node	*first;
-	t_node	*second;
+	t_node	*last;
 
 	if (!top || !*top || !(*top)->next)
 		return ;
 	first = *top;
-	second = first->next;
-	first->next = second->next;
-	if (second->next)
-		second->next->prev = first;
-	second->prev = NULL;
-	second->next = first;
-	first->prev = second;
-	*top = second;
+	last = *top;
+	while (last->next)
+		last = last->next;
+	*top = first->next;
+	(*top)->prev = NULL;
+	last->next = first;
+	first->prev = last;
+	first->next = NULL;
 }
 
-void	sa(t_ps *ps)
+void	ra(t_ps *ps)
 {
-	do_swap(&ps->a);
-	ps_putstr_fd("sa\n", 1);
+	do_rotate(&ps->a);
+	ft_putstr_fd("ra\n", 1);
 }
 
-void	sb(t_ps *ps)
+void	rb(t_ps *ps)
 {
-	do_swap(&ps->b);
-	ps_putstr_fd("sb\n", 1);
+	do_rotate(&ps->b);
+	ft_putstr_fd("rb\n", 1);
 }
 
-void	ss(t_ps *ps)
+void	rr(t_ps *ps)
 {
-	do_swap(&ps->a);
-	do_swap(&ps->b);
-	ps_putstr_fd("ss\n", 1);
+	do_rotate(&ps->a);
+	do_rotate(&ps->b);
+	ft_putstr_fd("rr\n", 1);
 }

@@ -11,41 +11,38 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <unistd.h>
 
-static void	do_reverse_rotate(t_node **top)
+static void	do_reverse_rotate(t_node **stack)
 {
 	t_node	*last;
 	t_node	*second_last;
 
-	if (!top || !*top || !(*top)->next)
+	if (!stack || !*stack || !(*stack)->next)
 		return ;
-	last = *top;
+	last = *stack;
 	while (last->next)
 		last = last->next;
 	second_last = last->prev;
 	second_last->next = NULL;
 	last->prev = NULL;
-	last->next = *top;
-	(*top)->prev = last;
-	*top = last;
+	push_front(stack, last);
 }
 
 void	rra(t_ps *ps)
 {
 	do_reverse_rotate(&ps->a);
-	ps_putstr_fd("rra\n", 1);
+	ft_putstr_fd("rra\n", 1);
 }
 
 void	rrb(t_ps *ps)
 {
 	do_reverse_rotate(&ps->b);
-	ps_putstr_fd("rrb\n", 1);
+	ft_putstr_fd("rrb\n", 1);
 }
 
 void	rrr(t_ps *ps)
 {
 	do_reverse_rotate(&ps->a);
 	do_reverse_rotate(&ps->b);
-	ps_putstr_fd("rrr\n", 1);
+	ft_putstr_fd("rrr\n", 1);
 }

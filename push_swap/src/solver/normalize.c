@@ -17,12 +17,11 @@ static void	copy_values(t_node *top, int *arr, int size)
 {
 	int	i;
 
-	i = 0;
-	while (i < size && top)
+	i = -1;
+	while (++i < size && top)
 	{
 		arr[i] = top->val;
 		top = top->next;
-		i++;
 	}
 }
 
@@ -32,11 +31,11 @@ static void	sort_array(int *arr, int size)
 	int	j;
 	int	tmp;
 
-	i = 0;
-	while (i < size - 1)
+	i = -1;
+	while (++i < size - 1)
 	{
-		j = i + 1;
-		while (j < size)
+		j = i;
+		while (++j < size)
 		{
 			if (arr[i] > arr[j])
 			{
@@ -44,9 +43,7 @@ static void	sort_array(int *arr, int size)
 				arr[i] = arr[j];
 				arr[j] = tmp;
 			}
-			j++;
 		}
-		i++;
 	}
 }
 
@@ -54,13 +51,10 @@ static int	find_index(int *sorted, int size, int val)
 {
 	int	i;
 
-	i = 0;
-	while (i < size)
-	{
+	i = -1;
+	while (++i < size)
 		if (sorted[i] == val)
 			return (i);
-		i++;
-	}
 	return (0);
 }
 

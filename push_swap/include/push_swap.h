@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
+/*   By: hgenc@student.42kocaeli.com.tr <hgenc@s    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 16:42:48 by hgenc@stude       #+#    #+#             */
-/*   Updated: 2025/11/10 15:57:47 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/08 16:42:48 by hgenc@stude      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 # define PUSH_SWAP_H
 
 # include <stdlib.h>
-# include <limits.h>
+
+
+# define INT_MINN -2147483648
+# define INT_MAXX 2147483647
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_node
 {
@@ -32,15 +37,14 @@ typedef struct s_ps
 	int		size_b;
 }	t_ps;
 
-size_t	ps_strlen(const char *s);
-void	ps_putstr_fd(const char *s, int fd);
+size_t	ft_strlen(const char *s);
+void	ft_putstr_fd(const char *s, int fd);
 
-int		ps_is_space(char c);
-int		ps_is_digit(char c);
+int		ft_is_space(char c);
+int		ft_is_digit(char c);
+int		ft_atoi(const char *s, int *out);
 
-int		ps_atoi_safe(const char *s, int *out);
-
-int		is_sorted(t_node *top);
+int		ft_is_sorted(t_node *top);
 void	free_all(t_ps *ps);
 void	error_exit(t_ps *ps);
 
@@ -50,12 +54,12 @@ char	**ps_split_ws(const char *s);
 void	ps_free_split(char **arr);
 int		has_duplicate(int *vals, int count);
 
+
 void	normalize_indices(t_ps *ps);
 
-t_node	*ps_new_node(int val);
-void	ps_push_front(t_node **top, t_node *n);
-void	ps_push_back(t_node **top, t_node *n);
-int		ps_stack_size(t_node *top);
+t_node	*new_node(int val);
+void	push_front(t_node **top, t_node *n);
+void	push_back(t_node **top, t_node *n);
 
 void	sa(t_ps *ps);
 void	sb(t_ps *ps);
@@ -73,9 +77,6 @@ void	rrb(t_ps *ps);
 void	rrr(t_ps *ps);
 
 void	sort_small(t_ps *ps);
-void	sort_two(t_ps *ps);
-void	sort_three(t_ps *ps);
-int		find_min_pos(t_node *top);
 
 void	solve_radix(t_ps *ps);
 

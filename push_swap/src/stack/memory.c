@@ -42,6 +42,6 @@ void	free_all(t_ps *ps)
 void	error_exit(t_ps *ps)
 {
 	free_all(ps);
-	ps_putstr_fd("Error\n", 2);
+	ft_putstr_fd("Error\n", 2);
 	exit(1);
 }

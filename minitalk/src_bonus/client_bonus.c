@@ -25,18 +25,40 @@ static void	ack_handler(int sig)
 	}
 }
 
+static int	get_server_pid(char *arg)
+{
+	int	i;
+	int	pid;
+
+	i = 0;
+	if (!arg || !arg[0])
+		ft_error_exit_bonus("Invalid PID");
+	while (arg[i])
+	{
+		if (arg[i] < '0' || arg[i] > '9')
+			ft_error_exit_bonus("Invalid PID");
+		i++;
+	}
+	pid = ft_atoi_bonus(arg);
+	if (pid <= 0 || kill(pid, 0) == -1)
+		ft_error_exit_bonus("Invalid PID");
+	return (pid);
+}
+
 static void	send_char(int pid, unsigned char c)
 {
 	int	i;
+	int	sig;
 
 	i = 8;
 	while (--i >= 0)
 	{
 		g_ack = 0;
-		if ((c >> i) & 1)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
+		sig = SIGUSR1;
+		if (!((c >> i) & 1))
+			sig = SIGUSR2;
+		if (kill(pid, sig) == -1)
+			ft_error_exit_bonus("Failed to send signal");
 		while (!g_ack)
 			pause();
 	}
@@ -50,9 +72,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 		ft_error_exit_bonus("Usage: ./client_bonus <PID> <MESSAGE>");
-	server_pid = ft_atoi_bonus(argv[1]);
-	if (server_pid <= 0)
-		ft_error_exit_bonus("Invalid PID");
+	server_pid = get_server_pid(argv[1]);
 	sa.sa_handler = ack_handler;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);

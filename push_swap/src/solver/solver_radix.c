@@ -37,10 +37,10 @@ void	solve_radix(t_ps *ps)
 		j = 0;
 		while (j < size)
 		{
-			if (((ps->a->idx >> i) & 1) == 1)
-				ra(ps);
-			else
+			if (((ps->a->idx >> i) & 1) == 0)
 				pb(ps);
+			else
+				ra(ps);
 			j++;
 		}
 		while (ps->size_b > 0)

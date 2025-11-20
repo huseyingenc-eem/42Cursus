@@ -1,51 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops_rotate.c                                       :+:      :+:    :+:   */
+/*   ops_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:48:10 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:53:08 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/10 15:53:07 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <unistd.h>
 
-static void	do_rotate(t_node **top)
+static void	do_push(t_node **from, t_node **to)
 {
-	t_node	*first;
-	t_node	*last;
+	t_node	*node_to_push;
 
-	if (!top || !*top || !(*top)->next)
+	if (!from || !*from)
 		return ;
-	first = *top;
-	last = *top;
-	while (last->next)
-		last = last->next;
-	*top = first->next;
-	(*top)->prev = NULL;
-	last->next = first;
-	first->prev = last;
-	first->next = NULL;
+	node_to_push = *from;
+	*from = (*from)->next;
+	if (*from)
+		(*from)->prev = NULL;
+	push_front(to, node_to_push);
 }
 
-void	ra(t_ps *ps)
+void	pa(t_ps *ps)
 {
-	do_rotate(&ps->a);
-	ps_putstr_fd("ra\n", 1);
+	if (ps->size_b > 0)
+	{
+		do_push(&ps->b, &ps->a);
+		ps->size_a++;
+		ps->size_b--;
+	}
+	ft_putstr_fd("pa\n", 1);
 }
 
-void	rb(t_ps *ps)
+void	pb(t_ps *ps)
 {
-	do_rotate(&ps->b);
-	ps_putstr_fd("rb\n", 1);
-}
-
-void	rr(t_ps *ps)
-{
-	do_rotate(&ps->a);
-	do_rotate(&ps->b);
-	ps_putstr_fd("rr\n", 1);
+	if (ps->size_a > 0)
+	{
+		do_push(&ps->a, &ps->b);
+		ps->size_b++;
+		ps->size_a--;
+	}
+	ft_putstr_fd("pb\n", 1);
 }

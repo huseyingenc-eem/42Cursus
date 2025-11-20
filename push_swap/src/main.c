@@ -25,12 +25,12 @@ int	main(int argc, char **argv)
 	ps.size_b = 0;
 	if (!parse_args(&ps, argc, argv))
 		error_exit(&ps);
-	if (ps.size_a == 1 || is_sorted(ps.a))
+	if (ps.size_a == 1 || ft_is_sorted(ps.a))
 	{
 		free_all(&ps);
 		return (0);
 	}
-	if (ps.size_a <= 5)
+	if (ps.size_a <= 20)
 		sort_small(&ps);
 	else
 	{

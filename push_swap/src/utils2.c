@@ -12,17 +12,17 @@
 
 #include "push_swap.h"
 
-int	ps_is_space(char c)
+int	ft_is_space(char c)
 {
 	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
-int	ps_is_digit(char c)
+int	ft_is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-int	is_sorted(t_node *top)
+int	ft_is_sorted(t_node *top)
 {
 	if (!top)
 		return (1);

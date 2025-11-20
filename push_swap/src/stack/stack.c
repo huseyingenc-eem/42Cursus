@@ -13,7 +13,7 @@
 #include "push_swap.h"
 #include <stdlib.h>
 
-t_node	*ps_new_node(int val)
+t_node	*new_node(int val)
 {
 	t_node	*n;
 
@@ -27,7 +27,7 @@ t_node	*ps_new_node(int val)
 	return (n);
 }
 
-void	ps_push_front(t_node **top, t_node *n)
+void	push_front(t_node **top, t_node *n)
 {
 	if (!n)
 		return ;
@@ -38,7 +38,7 @@ void	ps_push_front(t_node **top, t_node *n)
 	*top = n;
 }
 
-void	ps_push_back(t_node **top, t_node *n)
+void	push_back(t_node **top, t_node *n)
 {
 	t_node	*cur;
 
@@ -57,17 +57,4 @@ void	ps_push_back(t_node **top, t_node *n)
 	cur->next = n;
 	n->prev = cur;
 	n->next = NULL;
-}
-
-int	ps_stack_size(t_node *top)
-{
-	int	count;
-
-	count = 0;
-	while (top)
-	{
-		count++;
-		top = top->next;
-	}
-	return (count);
 }
