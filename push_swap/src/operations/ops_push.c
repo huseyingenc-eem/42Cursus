@@ -32,8 +32,8 @@ void	pa(t_ps *ps)
 		do_push(&ps->b, &ps->a);
 		ps->size_a++;
 		ps->size_b--;
+		ft_putstr_fd("pa\n", 1);
 	}
-	ft_putstr_fd("pa\n", 1);
 }
 
 void	pb(t_ps *ps)
@@ -43,6 +43,6 @@ void	pb(t_ps *ps)
 		do_push(&ps->a, &ps->b);
 		ps->size_b++;
 		ps->size_a--;
+		ft_putstr_fd("pb\n", 1);
 	}
-	ft_putstr_fd("pb\n", 1);
 }

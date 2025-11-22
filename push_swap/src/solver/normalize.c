@@ -67,7 +67,7 @@ void	normalize_indices(t_ps *ps)
 		return ;
 	sorted = (int *)malloc(sizeof(int) * ps->size_a);
 	if (!sorted)
-		return ;
+		error_exit(ps); ;
 	copy_values(ps->a, sorted, ps->size_a);
 	sort_array(sorted, ps->size_a);
 	cur = ps->a;

@@ -1,0 +1,19 @@
+# C/C++ build artifacts
+*.o
+*.a
+*.so
+*.out
+*.exe
+build/
+bin/
+
+# Log files
+*.log
+.err
+
+# Editor configuration
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
