@@ -6,11 +6,13 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:20:32 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:17:35 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 12:22:42 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
+#include "../include/minitalk_bonus.h"
+#include <signal.h>
+#include <unistd.h>
 
 static void	handle_char(t_server *server, siginfo_t *info)
 {

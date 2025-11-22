@@ -5,24 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/18 19:20:24 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:28:42 by hgenc            ###   ########.fr       */
+/*   Created: 2025/11/18 19:20:32 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/22 11:51:09 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 #include <signal.h>
+#include <unistd.h>
 
-static void	handle_char(t_server *server)
+static void	handle_char(t_server *server, siginfo_t *info)
 {
 	if (server->temp_char == '\0')
 	{
 		ft_putchar_fd('\n', 1);
+		kill(info->si_pid, SIGUSR2);
 	}
 	else
 		ft_putchar_fd(server->temp_char, 1);
 	server->bit_ctr = 0;
 	server->temp_char = 0;
+	kill(info->si_pid, SIGUSR1);
 }
 
 static void	handle_signal(int sig, siginfo_t *info, void *context)
@@ -39,11 +42,11 @@ static void	handle_signal(int sig, siginfo_t *info, void *context)
 	}
 	if (sig == SIGUSR1)
 		server.temp_char |= (1 << (7 - server.bit_ctr));
-	if (kill(info->si_pid, SIGUSR1) == -1)
-		ft_error_exit("Failed to send acknowledgement signal");
 	server.bit_ctr++;
 	if (server.bit_ctr == 8)
-		handle_char(&server);
+		handle_char(&server, info);
+	else
+		kill(info->si_pid, SIGUSR1);
 }
 
 static void	print_pid(void)

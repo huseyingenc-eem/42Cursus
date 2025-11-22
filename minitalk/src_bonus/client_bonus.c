@@ -6,11 +6,14 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:20:29 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:22:32 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 12:21:49 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
+#include "../include/minitalk_bonus.h"
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static volatile sig_atomic_t	g_ack = 0;
 

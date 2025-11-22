@@ -6,14 +6,12 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:20:41 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:13:14 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 11:51:37 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
-
-# include <unistd.h>
 
 typedef struct s_server
 {

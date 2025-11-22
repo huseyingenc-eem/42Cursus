@@ -6,11 +6,10 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:11:51 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:11:53 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 12:21:23 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -37,14 +36,6 @@ int	ft_atoi_bonus(const char *str)
 	return (result * sign);
 }
 
-void	ft_error_exit_bonus(char *msg)
-{
-	ft_putstr_fd_bonus("Error\n", 2);
-	ft_putstr_fd_bonus(msg, 2);
-	ft_putstr_fd_bonus("\n", 2);
-	exit(1);
-}
-
 void	ft_putchar_fd_bonus(char c, int fd)
 {
 	write(fd, &c, 1);
@@ -59,6 +50,14 @@ void	ft_putstr_fd_bonus(char *s, int fd)
 		ft_putchar_fd_bonus(*s, fd);
 		s++;
 	}
+}
+
+void	ft_error_exit_bonus(char *msg)
+{
+	ft_putstr_fd_bonus("Error\n", 2);
+	ft_putstr_fd_bonus(msg, 2);
+	ft_putstr_fd_bonus("\n", 2);
+	exit(1);
 }
 
 void	ft_putnbr_fd_bonus(int n, int fd)

@@ -5,17 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/18 19:19:56 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/18 21:19:30 by hgenc            ###   ########.fr       */
+/*   Created: 2025/11/18 19:20:29 by hgenc             #+#    #+#             */
+/*   Updated: 2025/11/22 11:50:34 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 #include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+static volatile sig_atomic_t	g_ack = 0;
 
 static void	ack_handler(int sig)
 {
-	(void)sig;
+	if (sig == SIGUSR1)
+		g_ack = 1;
+	else if (sig == SIGUSR2)
+	{
+		ft_putstr_fd("Message successfully delivered!\n", 1);
+		exit(0);
+	}
 }
 
 static int	get_server_pid(char *arg)
@@ -46,12 +56,14 @@ static void	send_char(int pid, unsigned char c)
 	i = 8;
 	while (--i >= 0)
 	{
+		g_ack = 0;
 		sig = SIGUSR1;
 		if (!((c >> i) & 1))
 			sig = SIGUSR2;
 		if (kill(pid, sig) == -1)
 			ft_error_exit("Failed to send signal");
-		pause();
+		while (!g_ack)
+			pause();
 	}
 }
 
@@ -71,12 +83,11 @@ int	main(int argc, char **argv)
 		ft_error_exit("Failed to set SIGUSR1 handler");
 	if (sigaction(SIGUSR2, &sa, NULL) == -1)
 		ft_error_exit("Failed to set SIGUSR2 handler");
-	i = 0;
-	while (argv[2][i])
-	{
+	i = -1;
+	while (argv[2][++i])
 		send_char(server_pid, (unsigned char)argv[2][i]);
-		i++;
-	}
 	send_char(server_pid, '\0');
+	while (1)
+		pause();
 	return (0);
 }
