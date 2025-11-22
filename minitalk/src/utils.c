@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:21:07 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/22 11:51:48 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 12:46:34 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void	ft_putstr_fd(char *s, int fd)
 
 int	ft_atoi(const char *str)
 {
-	int	result;
-	int	sign;
+	long		result;
+	int			sign;
+	const long	int_max = 2147483647;
+	const long	int_min = -2147483648;
 
 	result = 0;
 	sign = 1;
@@ -47,9 +49,13 @@ int	ft_atoi(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		result = result * 10 + (*str - '0');
+		if (sign == 1 && result > int_max)
+			return (0);
+		if (sign == -1 && (-result < int_min))
+			return (0);
 		str++;
 	}
-	return (result * sign);
+	return ((int)result * sign);
 }
 
 void	ft_error_exit(char *msg)

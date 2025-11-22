@@ -6,17 +6,19 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:11:51 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/22 12:21:23 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 12:46:06 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int	ft_atoi_bonus(const char *str)
 {
-	int	result;
-	int	sign;
+	long		result;
+	int			sign;
+	const long	int_max = 2147483647;
+	const long	int_min = -2147483648;
 
 	result = 0;
 	sign = 1;
@@ -31,9 +33,13 @@ int	ft_atoi_bonus(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		result = result * 10 + (*str - '0');
+		if (sign == 1 && result > int_max)
+			return (0);
+		if (sign == -1 && (-result < int_min))
+			return (0);
 		str++;
 	}
-	return (result * sign);
+	return ((int)result * sign);
 }
 
 void	ft_putchar_fd_bonus(char c, int fd)
