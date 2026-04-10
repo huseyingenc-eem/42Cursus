@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:48:15 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:57:54 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 18:23:30 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,34 @@ static char	*extract_word(const char **s)
 	return (word);
 }
 
+int	has_duplicate(int *vals, int count)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < count)
+	{
+		j = i;
+		while (++j < count)
+			if (vals[i] == vals[j])
+				return (1);
+	}
+	return (0);
+}
+
+void	ps_free_split(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
 char	**ps_split_ws(const char *s)
 {
 	char	**arr;
@@ -86,39 +114,4 @@ char	**ps_split_ws(const char *s)
 	}
 	arr[i] = NULL;
 	return (arr);
-}
-
-void	ps_free_split(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
-
-int	has_duplicate(int *vals, int count)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < count)
-	{
-		j = i + 1;
-		while (j < count)
-		{
-			if (vals[i] == vals[j])
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 }

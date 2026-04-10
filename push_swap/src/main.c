@@ -17,12 +17,12 @@ int	main(int argc, char **argv)
 {
 	t_ps	ps;
 
-	if (argc < 2)
-		return (0);
 	ps.a = NULL;
 	ps.b = NULL;
 	ps.size_a = 0;
 	ps.size_b = 0;
+	if (argc < 2)
+		error_exit(&ps);
 	if (!parse_args(&ps, argc, argv))
 		error_exit(&ps);
 	if (ps.size_a == 1 || ft_is_sorted(ps.a))

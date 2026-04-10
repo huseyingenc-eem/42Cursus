@@ -6,7 +6,7 @@
 /*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:48:07 by hgenc             #+#    #+#             */
-/*   Updated: 2025/11/10 15:48:09 by hgenc            ###   ########.fr       */
+/*   Updated: 2025/11/22 18:04:28 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	normalize_indices(t_ps *ps)
 		return ;
 	sorted = (int *)malloc(sizeof(int) * ps->size_a);
 	if (!sorted)
-		error_exit(ps); ;
+		error_exit(ps);
 	copy_values(ps->a, sorted, ps->size_a);
 	sort_array(sorted, ps->size_a);
 	cur = ps->a;
