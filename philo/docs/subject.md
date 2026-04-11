@@ -1,214 +1,448 @@
-# Philosophers - Felsefenin bu kadar ölümcül olacağını hiç düşünmemiştim
+# 📜 Philosophers — Proje Dokümantasyonu
 
-## Özet
-Bu projede, bir işlemin (process) thread'lenmesinin temellerini öğreneceksiniz. Thread (iş parçacığı) oluşturmayı ve mutex kullanımını keşfedeceksiniz.
-
-**Sürüm:** 13.0
+> _I never thought philosophy would be so deadly._
 
 ---
 
-## İçindekiler
-1. Giriş
-2. Genel Talimatlar
-3. Yapay Zeka (AI) Talimatları
-4. Genel Bakış
-5. Global Kurallar
-6. Zorunlu Kısım
-7. Readme Gereksinimleri
-8. Bonus Kısım
-9. Teslim ve Akran Değerlendirmesi
+## 📖 İçindekiler
+
+1. [Proje Özeti](#-proje-özeti)
+2. [Problem Tanımı — Dining Philosophers](#-problem-tanımı--dining-philosophers)
+3. [Program Argümanları](#-program-argümanları)
+4. [Genel Kurallar](#-genel-kurallar)
+5. [Mandatory Part — Zorunlu Kısım](#-mandatory-part--zorunlu-kısım)
+6. [İzin Verilen Fonksiyonlar (Mandatory)](#-i̇zin-verilen-fonksiyonlar-mandatory)
+7. [Yasak ve Kısıtlamalar](#-yasak-ve-kısıtlamalar)
+8. [Log Formatı](#-log-formatı)
+9. [Bonus Part](#-bonus-part)
+10. [İzin Verilen Fonksiyonlar (Bonus)](#-i̇zin-verilen-fonksiyonlar-bonus)
+11. [Makefile Kuralları](#-makefile-kuralları)
+12. [Norm Kuralları](#-norm-kuralları)
+13. [README Gereksinimleri](#-readme-gereksinimleri)
+14. [Değerlendirme ve Teslim](#-değerlendirme-ve-teslim)
 
 ---
 
-## Bölüm I: Giriş
+## 🧠 Proje Özeti
 
-Felsefe (Yunanca'dan, philosophia, kelimenin tam anlamıyla "bilgelik sevgisi"), varlık, bilgi, değerler, akıl, zihin ve dil ile ilgili genel ve temel soruların incelenmesidir. Bu tür sorular genellikle analiz edilmesi veya çözülmesi gereken problemler olarak çerçevelenir. Terim muhtemelen Pisagor (M.Ö. 570 - 495) tarafından türetilmiştir. Felsefi yöntemler arasında sorgulama, eleştirel tartışma, rasyonel argüman ve sistematik sunum yer alır.
+| Alan                | Değer                             |
+| ------------------- | --------------------------------- |
+| **Proje Adı**       | `philo`                           |
+| **Dil**             | C                                 |
+| **Konu**            | Thread, Mutex, Process, Semaphore |
+| **Versiyon**        | 13.0                              |
+| **Mandatory Dizin** | `philo/`                          |
+| **Bonus Dizin**     | `philo_bonus/`                    |
 
-Klasik felsefi sorular şunları içerir: Herhangi bir şey gerçekten bilinebilir ve kanıtlanabilir mi? En gerçek olan nedir? Filozoflar ayrıca daha pratik ve somut sorular da sorarlar: Yaşamanın en iyi yolu var mıdır? Adil olmak mı yoksa adaletsiz olmak mı (eğer yanına kar kalacaksa) daha iyidir? İnsanların özgür iradesi var mıdır?
-
-Tarihsel olarak, 'felsefe' terimi herhangi bir bilgi birikimini ifade ediyordu. Antik Yunan filozofu Aristoteles'ten 19. yüzyıla kadar, "doğa felsefesi" astronomi, tıp ve fiziği kapsıyordu. Örneğin, Newton'un 1687 tarihli eseri, Doğa Felsefesinin Matematiksel İlkeleri, daha sonra bir fizik kitabı olarak sınıflandırıldı.
-
-19\. yüzyılda, modern araştırma üniversitelerinin büyümesi, akademik felsefenin ve diğer disiplinlerin profesyonelleşmesine ve uzmanlaşmasına yol açtı. Modern çağda, geleneksel olarak felsefenin bir parçası olan bazı araştırmalar, psikoloji, sosyoloji, dilbilim ve ekonomi dahil olmak üzere ayrı akademik disiplinler haline geldi.
-
-Sanat, bilim, politika veya diğer uğraşlarla yakından ilgili diğer araştırmalar felsefenin bir parçası olarak kaldı. Örneğin, güzellik nesnel midir yoksa öznel midir? Birçok bilimsel yöntem mi vardır yoksa sadece bir tane mi? Siyasi ütopya umutlu bir rüya mı yoksa umutsuz bir fantezi mi?
-
-Akademik felsefenin başlıca alt alanları arasında metafizik ("gerçekliğin ve varlığın temel doğasıyla ilgili"), epistemoloji ("bilginin doğası ve temelleri [ve]... sınırları ve geçerliliği hakkında"), etik, estetik, siyaset felsefesi, mantık ve bilim felsefesi yer alır.
-
----
-
-## Bölüm II: Genel Talimatlar
-
-*   Projeniz C dilinde yazılmalıdır.
-*   Projeniz Norm'a uygun olarak yazılmalıdır. Bonus dosyalarınız/fonksiyonlarınız varsa, bunlar da norm kontrolüne dahildir ve bir norm hatası varsa 0 alırsınız.
-*   Fonksiyonlarınız, tanımsız davranışlar dışında beklenmedik bir şekilde (segmentation fault, bus error, double free, vb.) sonlanmamalıdır. Bu meydana gelirse, projeniz işlevsiz kabul edilecek ve değerlendirme sırasında 0 alacaktır.
-*   Tüm heap tahsisli bellek gerektiğinde uygun şekilde serbest bırakılmalıdır. Bellek sızıntılarına (memory leaks) tolerans gösterilmeyecektir.
-*   Konu gerektiriyorsa, kaynak dosyalarınızı -Wall, -Wextra ve -Werror bayraklarıyla, cc kullanarak derleyen bir Makefile göndermelisiniz. Ayrıca, Makefile'ınız gereksiz yeniden bağlama (relinking) yapmamalıdır.
-*   Makefile'ınız en az $(NAME), all, clean, fclean ve re kurallarını içermelidir.
-*   Projeniz için bonusları göndermek istiyorsanız, Makefile'ınıza projenin ana kısmında izin verilmeyen çeşitli başlıkları, kütüphaneleri veya fonksiyonları ekleyecek bir bonus kuralı dahil etmelisiniz. Bonuslar, konu aksi belirtilmedikçe _bonus.{c/h} dosyalarına yerleştirilmelidir. Zorunlu ve bonus kısımların değerlendirmesi ayrı ayrı yapılır.
-*   Projeniz libft kullanmanıza izin veriyorsa, kaynaklarını ve ilgili Makefile'ını bir libft klasörüne kopyalamalısınız. Projenizin Makefile'ı, kütüphaneyi kendi Makefile'ını kullanarak derlemeli, ardından projeyi derlemelidir.
-*   Bu çalışma gönderilmesi gerekmese ve notlandırılmayacak olsa bile, projeniz için test programları oluşturmanızı teşvik ediyoruz. Bu, size kendi çalışmanızı ve arkadaşlarınızın çalışmasını kolayca test etme fırsatı verecektir. Bu testleri özellikle savunmanız sırasında faydalı bulacaksınız. Gerçekten de, savunma sırasında kendi testlerinizi ve/veya değerlendirdiğiniz akranınızın testlerini kullanmakta özgürsünüz.
-*   Çalışmanızı atanan Git deposuna gönderin. Sadece Git deposundaki çalışma değerlendirilecektir. Çalışmanızı notlandırmak için Deepthought atanmışsa, bu akran değerlendirmelerinizden sonra gerçekleşecektir. Deepthought'un notlandırması sırasında çalışmanızın herhangi bir bölümünde bir hata oluşursa, değerlendirme duracaktır.
+Bu projede bir **süreç içinde thread oluşturma** ve **mutex kullanımının** temellerini öğreneceksin. Bonus kısımda ise **process** ve **semaphore** kavramlarına geçiş yapılır.
 
 ---
 
-## Bölüm III: Yapay Zeka (AI) Talimatları
+## 🍝 Problem Tanımı — Dining Philosophers
 
-**Bağlam**
-Öğrenme yolculuğunuz sırasında, yapay zeka birçok farklı görevde yardımcı olabilir. Yapay zeka araçlarının çeşitli yeteneklerini keşfetmek ve çalışmalarınızı nasıl destekleyebileceklerini görmek için zaman ayırın. Ancak, bunlara her zaman dikkatli yaklaşın ve sonuçları eleştirel bir şekilde değerlendirin. Kod, dokümantasyon, fikirler veya teknik açıklamalar olsun, sorunuzun iyi oluşturulduğundan veya üretilen içeriğin doğru olduğundan asla tamamen emin olamazsınız. Akranlarınız, hatalardan ve kör noktalardan kaçınmanıza yardımcı olacak değerli bir kaynaktır.
+Klasik bir eşzamanlılık (concurrency) problemidir:
 
-**Ana mesaj**
-☛ Tekrarlayan veya sıkıcı görevleri azaltmak için yapay zekayı kullanın.
-☛ Gelecekteki kariyerinize fayda sağlayacak hem kodlama hem de kodlama dışı istem (prompt) becerilerini geliştirin.
-☛ Ortak riskleri, önyargıları ve etik sorunları daha iyi öngörmek ve bunlardan kaçınmak için yapay zeka sistemlerinin nasıl çalıştığını öğrenin.
-☛ Akranlarınızla çalışarak hem teknik hem de güç becerilerinizi (power skills) geliştirmeye devam edin.
-☛ Sadece tamamen anladığınız ve sorumluluğunu alabileceğiniz yapay zeka tarafından üretilen içeriği kullanın.
+```
+        [F]
+    P1      P5
+  [F]        [F]
+    P2      P4
+        [F]
+      P3
+     [F]
+```
 
-**Öğrenci kuralları:**
-*   Yapay zeka araçlarını keşfetmek ve nasıl çalıştıklarını anlamak için zaman ayırmalısınız, böylece bunları etik bir şekilde kullanabilir ve potansiyel önyargıları azaltabilirsiniz.
-*   İstemde bulunmadan önce probleminiz üzerinde düşünmelisiniz — bu, doğru kelime dağarcığını kullanarak daha net, daha ayrıntılı ve daha alakalı istemler yazmanıza yardımcı olur.
-*   Yapay zeka tarafından üretilen her şeyi sistematik olarak kontrol etme, gözden geçirme, sorgulama ve test etme alışkanlığını geliştirmelisiniz.
-*   Her zaman akran değerlendirmesi (peer review) istemelisiniz — sadece kendi doğrulamanıza güvenmeyin.
+### Senaryo
 
-**Aşama çıktıları:**
-*   Hem genel amaçlı hem de alana özgü istem becerileri geliştirmek.
-*   Yapay zeka araçlarının etkili kullanımıyla üretkenliğinizi artırmak.
-*   Hesaplamalı düşünme, problem çözme, uyarlanabilirlik ve işbirliğini güçlendirmeye devam etmek.
+- Bir veya daha fazla filozof **yuvarlak bir masada** oturur.
+- Masanın ortasında büyük bir **spagetti tabağı** vardır.
+- Filozoflar sırayla **yemek yer**, **düşünür** ve **uyur**.
+  - Yemek yerken → düşünmez ve uyumaz.
+  - Düşünürken → yemek yemez ve uyumaz.
+  - Uyurken → yemek yemez ve düşünmez.
+- Masada **filozof sayısı kadar çatal** bulunur.
+- Spagetti yemek için **iki çatal** (sağ ve sol) gereklidir.
+- Filozof yemeğini bitirdiğinde çatalları **masaya geri bırakır** ve uyumaya başlar.
+- Uyandığında **düşünmeye** başlar.
+- Simülasyon, bir filozof **açlıktan öldüğünde** durur.
 
-**Yorumlar ve örnekler:**
-*   Sınavlar, değerlendirmeler ve daha fazlası gibi gerçek anlayışı göstermeniz gereken durumlarla düzenli olarak karşılaşacaksınız. Hazırlıklı olun, hem teknik hem de kişilerarası becerilerinizi geliştirmeye devam edin.
-*   Mantığınızı açıklamak ve akranlarınızla tartışmak genellikle anlayışınızdaki boşlukları ortaya çıkarır. Akran öğrenimini (peer learning) bir öncelik haline getirin.
-*   Yapay zeka araçları genellikle sizin özel bağlamınızdan yoksundur ve genel yanıtlar verme eğilimindedir. Sizin ortamınızı paylaşan akranlarınız, daha alakalı ve doğru içgörüler sunabilir.
-*   Yapay zekanın en olası cevabı üretme eğiliminde olduğu durumlarda, akranlarınız alternatif bakış açıları ve değerli nüanslar sağlayabilir. Onlara bir kalite kontrol noktası olarak güvenin.
+### Kritik Kurallar
 
-✓ İyi uygulama:
-Yapay zekaya soruyorum: "Bir sıralama fonksiyonunu nasıl test ederim?" Bana birkaç fikir veriyor. Bunları deniyorum ve sonuçları bir arkadaşımla gözden geçiriyorum. Yaklaşımı birlikte geliştiriyoruz.
-
-✗ Kötü uygulama:
-Yapay zekadan bütün bir fonksiyonu yazmasını istiyorum, projeme kopyalayıp yapıştırıyorum. Akran değerlendirmesi sırasında ne yaptığını veya nedenini açıklayamıyorum. Güvenilirliğimi kaybediyorum — ve projeden kalıyorum.
-
-✓ İyi uygulama:
-Bir ayrıştırıcı (parser) tasarlamaya yardımcı olması için yapay zekayı kullanıyorum. Sonra mantığı bir arkadaşımla adım adım inceliyorum. İki hata yakalıyoruz ve birlikte yeniden yazıyoruz — daha iyi, daha temiz ve tamamen anlaşılmış.
-
-✗ Kötü uygulama:
-Copilot'un projemin önemli bir parçası için kodumu oluşturmasına izin veriyorum. Derleniyor, ancak pipe'ları nasıl yönettiğini açıklayamıyorum. Değerlendirme sırasında gerekçelendirmeyi başaramıyorum ve projeden kalıyorum.
+| Kural                 | Açıklama                                                      |
+| --------------------- | ------------------------------------------------------------- |
+| **Açlıktan ölmemeli** | Her filozof yemek yemeli ve asla aç kalmamalı                 |
+| **İletişim yok**      | Filozoflar birbirleriyle iletişim kuramaz                     |
+| **Bilgi yok**         | Bir filozof, başka bir filozofun ölmek üzere olduğunu bilemez |
+| **Ölümden kaçınmalı** | Filozoflar ölmekten kaçınmalıdır!                             |
 
 ---
 
-## Bölüm IV: Genel Bakış
+## 🔢 Program Argümanları
 
-Bu ödevde başarılı olmak için bilmeniz gereken temel şeyler şunlardır:
+```bash
+./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+```
 
-*   Bir veya daha fazla filozof yuvarlak bir masada oturur. Masanın ortasında büyük bir kase spagetti vardır.
-*   Filozoflar sırayla yemek yer, düşünür ve uyurlar.
-    *   Yemek yerken ne düşünürler ne de uyurlar;
-    *   düşünürken ne yemek yerler ne de uyurlar;
-    *   ve elbette uyurken ne yemek yerler ne de düşünürler.
-*   Masada çatallar da vardır. Filozof sayısı kadar çatal vardır.
-*   Spagettiyi sadece tek çatal ile yemek pratik olmadığından, bir filozof yemek yemeden önce hem sağındaki hem de solundaki çatalı almalıdır.
-*   Bir filozof yemeğini bitirdiğinde, çatallarını masaya geri koyar ve uyumaya başlar. Uyandığında tekrar düşünmeye başlar. Simülasyon, bir filozof açlıktan öldüğünde durur.
-*   Her filozofun yemek yemesi gerekir ve asla aç kalmamalıdır.
-*   Filozoflar birbirleriyle iletişim kurmazlar.
-*   Filozoflar, başka bir filozofun ölmek üzere olup olmadığını bilmezler.
-*   Söylemeye gerek yok, filozoflar ölmekten kaçınmalıdır!
+| Argüman                                     | Tip        | Zorunlu | Açıklama                                                                                                                 |
+| ------------------------------------------- | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `number_of_philosophers`                    | `int`      | ✅      | Filozof sayısı = çatal sayısı                                                                                            |
+| `time_to_die`                               | `int` (ms) | ✅      | Son yemeğinden (veya simülasyon başlangıcından) itibaren bu süre içinde yemeye **başlamazsa** ölür                       |
+| `time_to_eat`                               | `int` (ms) | ✅      | Yemek yeme süresi. Bu süre boyunca iki çatalı elinde tutmalı                                                             |
+| `time_to_sleep`                             | `int` (ms) | ✅      | Uyuma süresi                                                                                                             |
+| `number_of_times_each_philosopher_must_eat` | `int`      | ❌      | Tüm filozoflar bu sayıda yemek yediğinde simülasyon durur. Belirtilmezse simülasyon yalnızca bir filozof öldüğünde biter |
 
----
+### Filozof Numaralandırma
 
-## Bölüm V: Global Kurallar
-
-Zorunlu kısım için bir program ve (eğer bonus kısmı yapmaya karar verirseniz) bonus kısım için başka bir program yazmalısınız. Her ikisi de aşağıdaki kurallara uymalıdır:
-
-*   Global değişkenler yasaktır!
-*   Program(lar)ınız aşağıdaki argümanları almalıdır:
-    `number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]`
-    *   **number_of_philosophers (filozof_sayısı):** Filozof sayısı ve aynı zamanda çatal sayısı.
-    *   **time_to_die (ölme_süresi) (milisaniye cinsinden):** Bir filozof, son yemeğinin başlangıcından veya simülasyonun başlangıcından itibaren `time_to_die` milisaniye içinde yemek yemeye başlamazsa ölür.
-    *   **time_to_eat (yeme_süresi) (milisaniye cinsinden):** Bir filozofun yemek yemesi için geçen süre. Bu süre zarfında iki çatalı da ellerinde tutmaları gerekecektir.
-    *   **time_to_sleep (uyuma_süresi) (milisaniye cinsinden):** Bir filozofun uyuyarak geçireceği süre.
-    *   **number_of_times_each_philosopher_must_eat (her_filozofun_yemesi_gereken_miktar) (isteğe bağlı argüman):** Tüm filozoflar en az `number_of_times_each_philosopher_must_eat` kez yemek yemişse, simülasyon durur. Belirtilmezse, simülasyon bir filozof öldüğünde durur.
-*   Her filozofun 1'den `number_of_philosophers`'a kadar değişen bir numarası vardır.
-*   1 numaralı filozof, `number_of_philosophers` numaralı filozofun yanında oturur. N numaralı diğer herhangi bir filozof, N - 1 numaralı filozof ile N + 1 numaralı filozof arasında oturur.
-
-**Programınızın logları hakkında:**
-
-*   Bir filozofun herhangi bir durum değişikliği şu şekilde formatlanmalıdır:
-    *   `timestamp_in_ms X has taken a fork` (ms_cinsinden_zaman_damgası X bir çatal aldı)
-    *   `timestamp_in_ms X is eating` (ms_cinsinden_zaman_damgası X yemek yiyor)
-    *   `timestamp_in_ms X is sleeping` (ms_cinsinden_zaman_damgası X uyuyor)
-    *   `timestamp_in_ms X is thinking` (ms_cinsinden_zaman_damgası X düşünüyor)
-    *   `timestamp_in_ms X died` (ms_cinsinden_zaman_damgası X öldü)
-    *   `timestamp_in_ms`'i milisaniye cinsinden mevcut zaman damgasıyla ve `X`'i filozof numarasıyla değiştirin.
-*   Görüntülenen bir durum mesajı başka bir mesajla karışmamalıdır.
-*   Bir filozofun ölümünü duyuran mesaj, gerçek ölümünden sonraki 10 ms içinde görüntülenmelidir.
-*   Tekrar ediyorum, filozoflar ölmekten kaçınmalıdır!
-
-**Programınızda herhangi bir data race (veri yarışı) olmamalıdır.**
+- Her filozof **1'den `number_of_philosophers`'a** kadar numaralanır.
+- Filozof **1**, filozof **number_of_philosophers**'ın yanında oturur.
+- Filozof **N**, filozof **N-1** ve filozof **N+1** arasında oturur.
 
 ---
 
-## Bölüm VI: Zorunlu Kısım
+## 📏 Genel Kurallar
 
-| Program Adı | philo |
-| :--- | :--- |
-| **Teslim Edilecek Dosyalar** | Makefile, *.h, *.c, philo/ dizininde |
-| **Makefile** | NAME, all, clean, fclean, re |
-| **Argümanlar** | number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat] |
-| **Harici Fonksiyonlar** | memset, printf, malloc, free, write, usleep, gettimeofday, pthread_create, pthread_detach, pthread_join, pthread_mutex_init, pthread_mutex_destroy, pthread_mutex_lock, pthread_mutex_unlock |
-| **Libft izinli mi** | Hayır |
-| **Açıklama** | Thread'ler ve mutex'ler ile filozoflar |
+### Kesinlikle Uyulması Gerekenler
 
-Zorunlu kısım için özel kurallar şunlardır:
-
-*   Her filozof ayrı bir thread olarak temsil edilmelidir.
-*   Her filozof çiftinin arasında bir çatal vardır. Dolayısıyla, birden fazla filozof varsa, her filozofun sol tarafında bir çatal ve sağ tarafında bir çatal vardır. Sadece bir filozof varsa, sadece bir çatala erişimi olacaktır.
-*   Filozofların çatalları kopyalamasını önlemek için, her çatalın durumunu bir mutex ile korumalısınız.
+| #   | Kural                                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------------------- |
+| 1   | Proje **C dilinde** yazılmalıdır                                                                            |
+| 2   | **Global değişkenler YASAKTIR!**                                                                            |
+| 3   | Proje **42 Norm**'a uygun yazılmalıdır                                                                      |
+| 4   | Fonksiyonlar beklenmedik şekilde çökmemeli (segfault, bus error, double free vb.) — tanımsız davranış hariç |
+| 5   | Heap'te ayrılan tüm bellek uygun şekilde **free** edilmelidir. Memory leak tolere edilmez                   |
+| 6   | Programda **data race** (veri yarışı) bulunmamalıdır                                                        |
+| 7   | Derleme bayrakları: `-Wall -Wextra -Werror` ve `cc` derleyicisi                                             |
 
 ---
 
-## Bölüm VII: Readme Gereksinimleri
+## 🔧 Mandatory Part — Zorunlu Kısım
 
-Git deponuzun kökünde bir README.md dosyası sağlanmalıdır. Amacı, projeye aşina olmayan herkesin (akranlar, personel, işe alım uzmanları, vb.) projenin ne hakkında olduğunu, nasıl çalıştırılacağını ve konu hakkında daha fazla bilgiyi nerede bulacağını hızlı bir şekilde anlamasını sağlamaktır.
+| Alan                 | Değer                                         |
+| -------------------- | --------------------------------------------- |
+| **Program Adı**      | `philo`                                       |
+| **Teslim Dosyaları** | `Makefile`, `*.h`, `*.c` — `philo/` dizininde |
+| **Libft**            | Kullanılamaz                                  |
 
-README.md en az şunları içermelidir:
-*   İlk satır italik olmalı ve şöyle okunmalıdır: *This project has been created as part of the 42 curriculum by <giriş1>[, <giriş2>[, <giriş3>[...]]].*
-*   Projenin amacını ve kısa bir genel bakışını içeren, projeyi net bir şekilde sunan bir “Açıklama” (Description) bölümü.
-*   Derleme, kurulum ve/veya çalıştırma hakkında ilgili bilgileri içeren bir “Talimatlar” (Instructions) bölümü.
-*   Konuyla ilgili klasik referansları (dokümantasyon, makaleler, eğitimler vb.) listeleyen, ayrıca yapay zekanın nasıl kullanıldığını açıklayan (hangi görevler ve projenin hangi kısımları için olduğunu belirten) bir “Kaynaklar” (Resources) bölümü.
-*   Projeye bağlı olarak ek bölümler gerekebilir (örneğin, kullanım örnekleri, özellik listesi, teknik seçimler vb.).
+### Mandatory Özel Kurallar
 
-README dosyanız İngilizce yazılmalıdır.
-
----
-
-## Bölüm VIII: Bonus Kısım
-
-| Program Adı | philo_bonus |
-| :--- | :--- |
-| **Teslim Edilecek Dosyalar** | Makefile, *.h, *.c, philo_bonus/ dizininde |
-| **Makefile** | NAME, all, clean, fclean, re |
-| **Argümanlar** | number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat] |
-| **Harici Fonksiyonlar** | memset, printf, malloc, free, write, fork, kill, exit, pthread_create, pthread_detach, pthread_join, usleep, gettimeofday, waitpid, sem_open, sem_close, sem_post, sem_wait, sem_unlink |
-| **Libft izinli mi** | Hayır |
-| **Açıklama** | Süreçler (processes) ve semaforlar ile filozoflar |
-
-Bonus kısmın programı, zorunlu programla aynı argümanları alır. Global kurallar bölümünün gerekliliklerine uymalıdır.
-
-Bonus kısım için özel kurallar şunlardır:
-
-*   Tüm çatallar masanın ortasına konur.
-*   Bellekte durumları yoktur, ancak mevcut çatal sayısı bir semafor ile temsil edilir.
-*   Her filozof ayrı bir süreç (process) olarak temsil edilmelidir. Ancak, ana süreç bir filozof gibi davranmamalıdır.
-
-Bonus kısım, yalnızca zorunlu kısım MÜKEMMEL ise değerlendirilecektir. Mükemmel, zorunlu kısmın tamamen yapıldığı ve hatasız çalıştığı anlamına gelir. TÜM zorunlu gereksinimleri geçmediyseniz, bonus kısmınız hiç değerlendirilmeyecektir.
+1. Her filozof **ayrı bir thread** olarak temsil edilmelidir.
+2. Her filozof çifti arasında **bir çatal** bulunur:
+   - Birden fazla filozof varsa → her filozofun solunda ve sağında birer çatal vardır.
+   - **Tek filozof** varsa → yalnızca bir çatala erişimi olur (yemek yiyemez, ölür).
+3. Çatalların durumunun çoğaltılmasını önlemek için her çatalın durumu **bir mutex ile korunmalıdır**.
 
 ---
 
-## Bölüm IX: Teslim ve akran değerlendirmesi
+## ✅ İzin Verilen Fonksiyonlar (Mandatory)
 
-Ödevinizi her zamanki gibi Git deponuza gönderin. Savunma sırasında sadece deponuzun içindeki çalışma değerlendirilecektir. Doğru olduklarından emin olmak için dosyalarınızın isimlerini iki kez kontrol etmekten çekinmeyin.
+> ⚠️ **YALNIZCA aşağıdaki fonksiyonlar kullanılabilir. Başka hiçbir fonksiyon kullanılamaz!**
 
-*   Zorunlu kısım dizini: `philo/`
-*   Bonus kısım dizini: `philo_bonus/`
+| Fonksiyon               | Header         | Açıklama                                       |
+| ----------------------- | -------------- | ---------------------------------------------- |
+| `memset`                | `<string.h>`   | Bellek bloğunu belirtilen değerle doldurur     |
+| `printf`                | `<stdio.h>`    | Formatlanmış çıktı yazdırır                    |
+| `malloc`                | `<stdlib.h>`   | Dinamik bellek ayırır                          |
+| `free`                  | `<stdlib.h>`   | Dinamik belleği serbest bırakır                |
+| `write`                 | `<unistd.h>`   | Dosya tanımlayıcısına yazar                    |
+| `usleep`                | `<unistd.h>`   | Mikrosaniye cinsinden uyur                     |
+| `gettimeofday`          | `<sys/time.h>` | Geçerli zamanı mikrosaniye hassasiyetiyle alır |
+| `pthread_create`        | `<pthread.h>`  | Yeni bir thread oluşturur                      |
+| `pthread_detach`        | `<pthread.h>`  | Thread'i ayırır (detach eder)                  |
+| `pthread_join`          | `<pthread.h>`  | Thread'in bitmesini bekler                     |
+| `pthread_mutex_init`    | `<pthread.h>`  | Mutex başlatır                                 |
+| `pthread_mutex_destroy` | `<pthread.h>`  | Mutex'i yok eder                               |
+| `pthread_mutex_lock`    | `<pthread.h>`  | Mutex'i kilitler                               |
+| `pthread_mutex_unlock`  | `<pthread.h>`  | Mutex kilidini açar                            |
 
-Değerlendirme sırasında, bazen projede kısa bir değişiklik yapılması istenebilir. Bu, küçük bir davranış değişikliği, yazılacak veya yeniden yazılacak birkaç satır kod veya eklenmesi kolay bir özellik içerebilir. Bu adım her proje için geçerli olmasa da, değerlendirme yönergelerinde belirtilmişse buna hazırlıklı olmalısınız.
+### Fonksiyon Prototipleri (Referans)
 
-Bu adım, projenin belirli bir bölümünü gerçekten anlayıp anlamadığınızı doğrulamak içindir. Değişiklik, seçtiğiniz herhangi bir geliştirme ortamında (örneğin, normal kurulumunuz) gerçekleştirilebilir ve değerlendirmenin bir parçası olarak belirli bir zaman dilimi tanımlanmadıkça, birkaç dakika içinde yapılabilir olmalıdır. Örneğin, bir fonksiyonda veya komut dosyasında küçük bir güncelleme yapmanız, bir ekranı değiştirmeniz veya yeni bilgileri saklamak için bir veri yapısını ayarlamanız vb. istenebilir. Ayrıntılar (kapsam, hedef vb.) değerlendirme yönergelerinde belirtilecek ve aynı proje için bir değerlendirmeden diğerine değişebilecektir.
+```c
+// Bellek
+void *memset(void *s, int c, size_t n);
+void *malloc(size_t size);
+void  free(void *ptr);
+
+// I/O
+int    printf(const char *format, ...);
+ssize_t write(int fd, const void *buf, size_t count);
+
+// Zaman
+int    usleep(useconds_t usec);
+int    gettimeofday(struct timeval *tv, struct timezone *tz);
+
+// Thread
+int    pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                      void *(*start_routine)(void *), void *arg);
+int    pthread_detach(pthread_t thread);
+int    pthread_join(pthread_t thread, void **retval);
+
+// Mutex
+int    pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+int    pthread_mutex_destroy(pthread_mutex_t *mutex);
+int    pthread_mutex_lock(pthread_mutex_t *mutex);
+int    pthread_mutex_unlock(pthread_mutex_t *mutex);
+```
+
+---
+
+## 🚫 Yasak ve Kısıtlamalar
+
+| #   | Yasak                                                                                               |
+| --- | --------------------------------------------------------------------------------------------------- |
+| 1   | **Global değişken** kullanımı kesinlikle yasaktır                                                   |
+| 2   | Yukarıda listelenen fonksiyonlar **dışında** hiçbir harici fonksiyon kullanılamaz                   |
+| 3   | **libft** kullanılamaz                                                                              |
+| 4   | **Data race** (veri yarışı) bulunmamalıdır                                                          |
+| 5   | Norm hataları durumunda proje **0** puan alır                                                       |
+| 6   | Beklenmedik çökmeler (**segfault**, **bus error**, **double free**) durumunda proje **0** puan alır |
+| 7   | **Memory leak** tolere edilmez                                                                      |
+
+---
+
+## 📋 Log Formatı
+
+Her filozof durum değişikliği aşağıdaki formatta yazdırılmalıdır:
+
+```
+timestamp_in_ms X has taken a fork
+timestamp_in_ms X is eating
+timestamp_in_ms X is sleeping
+timestamp_in_ms X is thinking
+timestamp_in_ms X died
+```
+
+| Alan              | Açıklama                                   |
+| ----------------- | ------------------------------------------ |
+| `timestamp_in_ms` | Milisaniye cinsinden geçerli zaman damgası |
+| `X`               | Filozof numarası (1'den başlar)            |
+
+### Log Kuralları
+
+| #   | Kural                                                                                      |
+| --- | ------------------------------------------------------------------------------------------ |
+| 1   | Mesajlar birbiriyle **örtüşmemeli** (overlap olmamalı)                                     |
+| 2   | Ölüm mesajı, filozofun gerçek ölümünden itibaren **en fazla 10 ms** içinde gösterilmelidir |
+| 3   | Filozoflar ölmekten kaçınmalıdır!                                                          |
+
+### Örnek Çıktı
+
+```
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+200 1 is sleeping
+200 2 has taken a fork
+200 2 has taken a fork
+200 2 is eating
+400 1 is thinking
+400 2 is sleeping
+...
+```
+
+---
+
+## 🌟 Bonus Part
+
+| Alan                 | Değer                                               |
+| -------------------- | --------------------------------------------------- |
+| **Program Adı**      | `philo_bonus`                                       |
+| **Teslim Dosyaları** | `Makefile`, `*.h`, `*.c` — `philo_bonus/` dizininde |
+| **Libft**            | Kullanılamaz                                        |
+
+### Bonus Özel Kuralları
+
+| #   | Kural                                                                                      |
+| --- | ------------------------------------------------------------------------------------------ |
+| 1   | Tüm çatallar **masanın ortasına** konur                                                    |
+| 2   | Çatalların bellekte durumu yoktur; mevcut çatal sayısı bir **semaphore** ile temsil edilir |
+| 3   | Her filozof **ayrı bir process** olarak temsil edilmelidir                                 |
+| 4   | Ana (main) process bir filozof olarak **davranmamalıdır**                                  |
+
+> ⚠️ **Bonus kısım YALNIZCA mandatory kısım MÜKEMMEL ise değerlendirilir.**
+> Mükemmel = Mandatory kısım eksiksiz yapılmış ve hatasız çalışıyor.
+
+---
+
+## ✅ İzin Verilen Fonksiyonlar (Bonus)
+
+> ⚠️ **YALNIZCA aşağıdaki fonksiyonlar kullanılabilir. Başka hiçbir fonksiyon kullanılamaz!**
+
+| Fonksiyon        | Header          | Açıklama                                               |
+| ---------------- | --------------- | ------------------------------------------------------ |
+| `memset`         | `<string.h>`    | Bellek bloğunu belirtilen değerle doldurur             |
+| `printf`         | `<stdio.h>`     | Formatlanmış çıktı yazdırır                            |
+| `malloc`         | `<stdlib.h>`    | Dinamik bellek ayırır                                  |
+| `free`           | `<stdlib.h>`    | Dinamik belleği serbest bırakır                        |
+| `write`          | `<unistd.h>`    | Dosya tanımlayıcısına yazar                            |
+| `usleep`         | `<unistd.h>`    | Mikrosaniye cinsinden uyur                             |
+| `gettimeofday`   | `<sys/time.h>`  | Geçerli zamanı mikrosaniye hassasiyetiyle alır         |
+| `fork`           | `<unistd.h>`    | Yeni bir child process oluşturur                       |
+| `kill`           | `<signal.h>`    | Bir process'e sinyal gönderir                          |
+| `exit`           | `<stdlib.h>`    | Process'i sonlandırır                                  |
+| `pthread_create` | `<pthread.h>`   | Yeni bir thread oluşturur                              |
+| `pthread_detach` | `<pthread.h>`   | Thread'i ayırır                                        |
+| `pthread_join`   | `<pthread.h>`   | Thread'in bitmesini bekler                             |
+| `waitpid`        | `<sys/wait.h>`  | Child process'in bitmesini bekler                      |
+| `sem_open`       | `<semaphore.h>` | İsimli semaphore açar/oluşturur                        |
+| `sem_close`      | `<semaphore.h>` | Semaphore'u kapatır                                    |
+| `sem_post`       | `<semaphore.h>` | Semaphore değerini artırır (sinyal gönderir)           |
+| `sem_wait`       | `<semaphore.h>` | Semaphore değeri > 0 olana kadar bekler, sonra azaltır |
+| `sem_unlink`     | `<semaphore.h>` | İsimli semaphore'u siler                               |
+
+### Bonus Fonksiyon Prototipleri (Referans)
+
+```c
+// Process
+pid_t   fork(void);
+int     kill(pid_t pid, int sig);
+void    exit(int status);
+pid_t   waitpid(pid_t pid, int *status, int options);
+
+// Semaphore
+sem_t  *sem_open(const char *name, int oflag, ...);
+int     sem_close(sem_t *sem);
+int     sem_post(sem_t *sem);
+int     sem_wait(sem_t *sem);
+int     sem_unlink(const char *name);
+```
+
+---
+
+## 🔨 Makefile Kuralları
+
+Makefile aşağıdaki kurallara uymalıdır:
+
+| Kural     | Zorunlu         | Açıklama                                           |
+| --------- | --------------- | -------------------------------------------------- |
+| `$(NAME)` | ✅              | Programı derler                                    |
+| `all`     | ✅              | Programı derler                                    |
+| `clean`   | ✅              | Obje dosyalarını siler                             |
+| `fclean`  | ✅              | Obje dosyalarını ve çalıştırılabilir dosyayı siler |
+| `re`      | ✅              | `fclean` + `all` yapar                             |
+| `bonus`   | ❌ (bonus için) | Bonus dosyaları derler                             |
+
+### Derleme Gereksinimleri
+
+```makefile
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror
+# Gereksiz relinking yapılmamalıdır!
+```
+
+> ⚠️ Makefile **gereksiz relinking** yapmamalıdır (kaynak dosya değişmediğinde yeniden derleme olmamalı).
+
+---
+
+## 📐 Norm Kuralları
+
+42 Norm'a uyulması zorunludur. Başlıca kurallar:
+
+| Kural                   | Açıklama                                        |
+| ----------------------- | ----------------------------------------------- |
+| Fonksiyon uzunluğu      | Maksimum **25 satır** (süslü parantezler hariç) |
+| Fonksiyon parametreleri | Maksimum **4 parametre**                        |
+| Değişken bildirimi      | Fonksiyon başında, boş satırdan sonra kod       |
+| Satır uzunluğu          | Maksimum **80 karakter**                        |
+| Bir satırda bir bildiri | Her satırda yalnızca bir değişken bildirimi     |
+| Dosya başına fonksiyon  | Maksimum **5 fonksiyon**                        |
+| `for` döngüsü           | **Yasak**                                       |
+| Açıklama (comment)      | Fonksiyon içinde **yasak**                      |
+| Header koruması         | Her `.h` dosyasında **include guard** olmalı    |
+
+> Norm kontrolü için: `norminette` komutu kullanılır.
+
+---
+
+## 📄 README Gereksinimleri
+
+`README.md` dosyası Git repository'nin **kök dizininde** bulunmalıdır.
+
+### Zorunlu İçerik
+
+| Bölüm            | Açıklama                                                                                  |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| **İlk satır**    | İtalik olmalı: _This project has been created as part of the 42 curriculum by \<login\>._ |
+| **Description**  | Projenin amacı ve kısa genel bakış                                                        |
+| **Instructions** | Derleme, kurulum ve/veya çalıştırma bilgileri                                             |
+| **Resources**    | Konuyla ilgili kaynaklar + AI'ın hangi görevlerde kullanıldığının açıklaması              |
+
+> README **İngilizce** yazılmalıdır.
+
+---
+
+## 📦 Değerlendirme ve Teslim
+
+### Dizin Yapısı
+
+```
+.
+├── philo/              ← Mandatory part
+│   ├── Makefile
+│   ├── *.h
+│   └── *.c
+│
+├── philo_bonus/        ← Bonus part (opsiyonel)
+│   ├── Makefile
+│   ├── *.h
+│   └── *.c
+│
+└── README.md
+```
+
+### Teslim Kuralları
+
+| #   | Kural                                                                     |
+| --- | ------------------------------------------------------------------------- |
+| 1   | Atanan **Git repository**'sine teslim edilmelidir                         |
+| 2   | Yalnızca repository içindeki çalışma değerlendirilir                      |
+| 3   | Dosya adlarını **tekrar kontrol et**                                      |
+| 4   | Değerlendirme sırasında **küçük kod değişiklikleri** istenebilir          |
+| 5   | Bu değişiklikler birkaç dakika içinde yapılabilecek kadar basit olacaktır |
+
+### Değerlendirme Sırası
+
+1. Peer evaluation (Akran değerlendirmesi)
+2. Deepthought (Otomatik değerlendirme) — herhangi bir bölümde hata varsa değerlendirme durur
+
+---
+
+## 🧪 Test Senaryoları (Önerilen)
+
+Aşağıdaki test komutları projenin doğruluğunu kontrol etmek için kullanılabilir:
+
+```bash
+# Tek filozof — ölmeli (sadece 1 çatal var)
+./philo 1 800 200 200
+
+# Hiç kimse ölmemeli
+./philo 5 800 200 200
+
+# Hiç kimse ölmemeli
+./philo 4 410 200 200
+
+# Bir filozof ölmeli
+./philo 4 310 200 100
+
+# Yemek sayısı limiti — herkes 7 kez yemek yedikten sonra durmalı
+./philo 5 800 200 200 7
+
+# Geçersiz argümanlar
+./philo -5 800 200 200
+./philo 5 -800 200 200
+./philo 0 800 200 200
+```
+
+---
+
+## 📚 Faydalı Kaynaklar
+
+| Kaynak                                  | Link                                                              |
+| --------------------------------------- | ----------------------------------------------------------------- |
+| Dining Philosophers Problem (Wikipedia) | [Link](https://en.wikipedia.org/wiki/Dining_philosophers_problem) |
+| POSIX Threads Programming               | [Link](https://computing.llnl.gov/tutorials/pthreads/)            |
+| Mutex vs Semaphore                      | [Link](https://www.geeksforgeeks.org/mutex-vs-semaphore/)         |
+| `man pthread_create`                    | Terminal'de `man pthread_create`                                  |
+| `man pthread_mutex_lock`                | Terminal'de `man pthread_mutex_lock`                              |
+| `man sem_open`                          | Terminal'de `man sem_open`                                        |
+| `man usleep`                            | Terminal'de `man usleep`                                          |
+| `man gettimeofday`                      | Terminal'de `man gettimeofday`                                    |
