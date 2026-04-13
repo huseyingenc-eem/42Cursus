@@ -22,21 +22,32 @@ long long	get_time(void)
 
 void	ft_usleep(long long ms)
 {
-	long long	start;
+	long long	end_time;
+	long long	remaining;
 
-	start = get_time();
-	while (get_time() - start < ms)
-		usleep(200);
+	end_time = get_time() + ms;
+	while (get_time() < end_time)
+	{
+		remaining = end_time - get_time();
+		if (remaining > 2)
+			usleep(200);
+		else
+			usleep(50);
+	}
 }
 
 void	print_status(t_philo *philo, char *msg)
 {
 	long long	time;
 
+	if (is_stopped(philo->data))
+		return ;
 	pthread_mutex_lock(&philo->data->print_lock);
 	if (!is_stopped(philo->data))
 	{
 		time = get_time() - philo->data->start_time;
+		if (time < 0)
+			time = 0;
 		printf("%lld %d %s\n", time, philo->id, msg);
 	}
 	pthread_mutex_unlock(&philo->data->print_lock);

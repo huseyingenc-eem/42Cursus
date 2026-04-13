@@ -45,6 +45,10 @@ struct					s_data
 	int					nb_meals;
 	int					stop;
 	long long			start_time;
+	int					forks_inited;
+	int					print_lock_inited;
+	int					stop_lock_inited;
+	int					meal_lock_inited;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		stop_lock;
@@ -57,6 +61,9 @@ int						parse_args(t_data *data, int ac, char **av);
 
 /* init.c */
 int						init_data(t_data *data);
+
+/* actions.c */
+void					eat(t_philo *philo);
 
 /* routine.c */
 void					*routine(void *arg);

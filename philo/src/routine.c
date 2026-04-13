@@ -12,42 +12,38 @@
 
 #include "../include/philo.h"
 
-static void	take_forks(t_philo *philo)
+static void	sync_start(t_philo *philo)
 {
+	while (get_time() < philo->data->start_time)
+		usleep(50);
+}
+
+static long long	get_start_delay(t_philo *philo)
+{
+	if (philo->data->nb_philo % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			return (philo->data->time_eat / 2);
+		return (0);
+	}
+	if (philo->id == philo->data->nb_philo)
+		return ((long long)philo->data->time_eat * 2);
 	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken a fork");
-	}
+		return (philo->data->time_eat);
+	return (0);
 }
 
-static void	drop_forks(t_philo *philo)
+static void	think(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-}
+	long long	delay;
 
-static void	eat(t_philo *philo)
-{
-	take_forks(philo);
-	pthread_mutex_lock(&philo->data->meal_lock);
-	philo->last_meal = get_time();
-	pthread_mutex_unlock(&philo->data->meal_lock);
-	print_status(philo, "is eating");
-	ft_usleep(philo->data->time_eat);
-	pthread_mutex_lock(&philo->data->meal_lock);
-	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->data->meal_lock);
-	drop_forks(philo);
+	print_status(philo, "is thinking");
+	if (philo->data->nb_philo % 2 == 0)
+		return ;
+	delay = (long long)philo->data->time_eat * 2
+		- philo->data->time_sleep;
+	if (delay > 0)
+		ft_usleep(delay);
 }
 
 static void	*lone_philo(t_philo *philo)
@@ -64,10 +60,10 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	sync_start(philo);
 	if (philo->data->nb_philo == 1)
 		return (lone_philo(philo));
-	if (philo->id % 2 == 0)
-		ft_usleep(philo->data->time_eat / 2);
+	ft_usleep(get_start_delay(philo));
 	while (!is_stopped(philo->data))
 	{
 		eat(philo);
@@ -75,9 +71,7 @@ void	*routine(void *arg)
 			break ;
 		print_status(philo, "is sleeping");
 		ft_usleep(philo->data->time_sleep);
-		print_status(philo, "is thinking");
-		if (philo->data->nb_philo % 2 != 0)
-			ft_usleep(philo->data->time_eat / 2);
+		think(philo);
 	}
 	return (NULL);
 }

@@ -11,28 +11,24 @@
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+#include <limits.h>
 
-static int	ft_atoi(const char *str)
+static int	parse_positive_int(const char *str, int *value)
 {
-	int		sign;
+	int		i;
 	long	result;
 
-	sign = 1;
+	i = 0;
 	result = 0;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-' || *str == '+')
+	while (str[i])
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		if (result > (INT_MAX - (str[i] - '0')) / 10)
+			return (FALSE);
+		result = result * 10 + (str[i] - '0');
+		i++;
 	}
-	while (*str >= '0' && *str <= '9')
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return ((int)(result * sign));
+	*value = (int)result;
+	return (TRUE);
 }
 
 static int	is_valid_arg(const char *str)
@@ -78,13 +74,14 @@ int	parse_args(t_data *data, int ac, char **av)
 		if (!is_valid_arg(av[i]))
 			return (error_exit("Error: invalid argument\n"));
 	}
-	data->nb_philo = ft_atoi(av[1]);
-	data->time_die = ft_atoi(av[2]);
-	data->time_eat = ft_atoi(av[3]);
-	data->time_sleep = ft_atoi(av[4]);
+	if (!parse_positive_int(av[1], &data->nb_philo)
+		|| !parse_positive_int(av[2], &data->time_die)
+		|| !parse_positive_int(av[3], &data->time_eat)
+		|| !parse_positive_int(av[4], &data->time_sleep))
+		return (error_exit("Error: invalid values\n"));
 	data->nb_meals = -1;
-	if (ac == 6)
-		data->nb_meals = ft_atoi(av[5]);
+	if (ac == 6 && !parse_positive_int(av[5], &data->nb_meals))
+		return (error_exit("Error: invalid values\n"));
 	if (validate_values(data))
 		return (error_exit("Error: invalid values\n"));
 	return (0);

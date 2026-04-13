@@ -12,28 +12,58 @@
 
 #include "../include/philo.h"
 
-static int	start_sim(t_data *data)
+static void	join_threads(t_data *data, int count)
 {
-	int			i;
-	pthread_t	monitor_th;
+	int	i;
 
-	data->start_time = get_time();
 	i = -1;
-	while (++i < data->nb_philo)
-		data->philos[i].last_meal = data->start_time;
+	while (++i < count)
+		pthread_join(data->philos[i].thread, NULL);
+}
+
+static int	start_threads(t_data *data)
+{
+	int	i;
+
 	i = -1;
 	while (++i < data->nb_philo)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, routine,
 				&data->philos[i]))
+		{
+			pthread_mutex_lock(&data->stop_lock);
+			data->stop = TRUE;
+			pthread_mutex_unlock(&data->stop_lock);
+			join_threads(data, i);
 			return (1);
+		}
 	}
-	if (pthread_create(&monitor_th, NULL, monitor, data))
-		return (1);
-	pthread_join(monitor_th, NULL);
+	return (0);
+}
+
+static int	start_sim(t_data *data)
+{
+	int			i;
+	pthread_t	monitor_th;
+
+	data->start_time = get_time() + 100 + data->nb_philo;
+	pthread_mutex_lock(&data->meal_lock);
 	i = -1;
 	while (++i < data->nb_philo)
-		pthread_join(data->philos[i].thread, NULL);
+		data->philos[i].last_meal = data->start_time;
+	pthread_mutex_unlock(&data->meal_lock);
+	if (start_threads(data))
+		return (1);
+	if (pthread_create(&monitor_th, NULL, monitor, data))
+	{
+		pthread_mutex_lock(&data->stop_lock);
+		data->stop = TRUE;
+		pthread_mutex_unlock(&data->stop_lock);
+		join_threads(data, data->nb_philo);
+		return (1);
+	}
+	pthread_join(monitor_th, NULL);
+	join_threads(data, data->nb_philo);
 	return (0);
 }
 
@@ -49,7 +79,7 @@ int	main(int argc, char **argv)
 	else if (init_data(&data))
 		ret = 1;
 	else
-		start_sim(&data);
+		ret = start_sim(&data);
 	cleanup(&data);
 	return (ret);
 }

@@ -19,13 +19,16 @@ void	cleanup(t_data *data)
 	if (data->forks)
 	{
 		i = -1;
-		while (++i < data->nb_philo)
+		while (++i < data->forks_inited)
 			pthread_mutex_destroy(&data->forks[i]);
 		free(data->forks);
 	}
-	pthread_mutex_destroy(&data->print_lock);
-	pthread_mutex_destroy(&data->stop_lock);
-	pthread_mutex_destroy(&data->meal_lock);
+	if (data->print_lock_inited)
+		pthread_mutex_destroy(&data->print_lock);
+	if (data->stop_lock_inited)
+		pthread_mutex_destroy(&data->stop_lock);
+	if (data->meal_lock_inited)
+		pthread_mutex_destroy(&data->meal_lock);
 	if (data->philos)
 		free(data->philos);
 }

@@ -19,17 +19,13 @@ static int	init_forks(t_data *data)
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 	if (!data->forks)
 		return (1);
+	data->forks_inited = 0;
 	i = -1;
 	while (++i < data->nb_philo)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL))
-		{
-			while (--i >= 0)
-				pthread_mutex_destroy(&data->forks[i]);
-			free(data->forks);
-			data->forks = NULL;
 			return (1);
-		}
+		data->forks_inited++;
 	}
 	return (0);
 }
@@ -38,17 +34,13 @@ static int	init_mutexes(t_data *data)
 {
 	if (pthread_mutex_init(&data->print_lock, NULL))
 		return (1);
+	data->print_lock_inited = TRUE;
 	if (pthread_mutex_init(&data->stop_lock, NULL))
-	{
-		pthread_mutex_destroy(&data->print_lock);
 		return (1);
-	}
+	data->stop_lock_inited = TRUE;
 	if (pthread_mutex_init(&data->meal_lock, NULL))
-	{
-		pthread_mutex_destroy(&data->print_lock);
-		pthread_mutex_destroy(&data->stop_lock);
 		return (1);
-	}
+	data->meal_lock_inited = TRUE;
 	return (0);
 }
 

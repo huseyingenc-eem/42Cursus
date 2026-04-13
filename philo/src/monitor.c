@@ -30,7 +30,7 @@ static int	check_death(t_data *data)
 		pthread_mutex_lock(&data->meal_lock);
 		time = get_time() - data->philos[i].last_meal;
 		pthread_mutex_unlock(&data->meal_lock);
-		if (time > data->time_die)
+		if (time >= data->time_die)
 		{
 			set_stop(data);
 			pthread_mutex_lock(&data->print_lock);
