@@ -64,11 +64,11 @@ int	init_data(t_data *data)
 {
 	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!data->philos)
-		return (1);
+		return (error_exit("Error: allocation failed\n"));
 	if (init_forks(data))
-		return (1);
+		return (error_exit("Error: mutex init failed\n"));
 	if (init_mutexes(data))
-		return (1);
+		return (error_exit("Error: mutex init failed\n"));
 	init_philos(data);
 	return (0);
 }

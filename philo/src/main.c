@@ -38,7 +38,7 @@ static int	start_threads(t_data *data)
 			data->ready = TRUE;
 			pthread_mutex_unlock(&data->meal_lock);
 			join_threads(data, i);
-			return (1);
+			return (error_exit("Error: thread creation failed\n"));
 		}
 	}
 	return (0);
@@ -70,7 +70,7 @@ static int	start_sim(t_data *data)
 		data->stop = TRUE;
 		pthread_mutex_unlock(&data->stop_lock);
 		join_threads(data, data->nb_philo);
-		return (1);
+		return (error_exit("Error: monitor thread creation failed\n"));
 	}
 	pthread_join(monitor_th, NULL);
 	join_threads(data, data->nb_philo);
