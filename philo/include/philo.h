@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 14:30:00 by hgenc             #+#    #+#             */
-/*   Updated: 2026/02/10 14:30:00 by hgenc            ###   ########.fr       */
+/*   Updated: 2026/04/17 19:29:16 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,22 @@ struct					s_data
 	t_philo				*philos;
 };
 
-/* parse.c */
 int						parse_args(t_data *data, int ac, char **av);
 
-/* init.c */
 int						init_data(t_data *data);
 
-/* actions.c */
 void					eat(t_philo *philo);
 
-/* routine.c */
 void					*routine(void *arg);
 
-/* monitor.c */
 void					*monitor(void *arg);
 
-/* utils.c */
 long long				get_time(void);
 void					ft_usleep(long long ms, t_data *data);
 void					print_status(t_philo *philo, char *msg);
 int						is_stopped(t_data *data);
 int						error_exit(char *msg);
 
-/* cleanup.c */
 void					cleanup(t_data *data);
 
 #endif
