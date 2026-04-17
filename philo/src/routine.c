@@ -14,8 +14,17 @@
 
 static void	sync_start(t_philo *philo)
 {
-	while (get_time() < philo->data->start_time)
-		usleep(50);
+	int	ready;
+
+	ready = FALSE;
+	while (!ready)
+	{
+		pthread_mutex_lock(&philo->data->meal_lock);
+		ready = philo->data->ready;
+		pthread_mutex_unlock(&philo->data->meal_lock);
+		if (!ready)
+			usleep(100);
+	}
 }
 
 static long long	get_start_delay(t_philo *philo)
@@ -43,14 +52,14 @@ static void	think(t_philo *philo)
 	delay = (long long)philo->data->time_eat * 2
 		- philo->data->time_sleep;
 	if (delay > 0)
-		ft_usleep(delay);
+		ft_usleep(delay, philo->data);
 }
 
 static void	*lone_philo(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	print_status(philo, "has taken a fork");
-	ft_usleep(philo->data->time_die);
+	ft_usleep(philo->data->time_die, philo->data);
 	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
@@ -61,16 +70,18 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	sync_start(philo);
+	if (is_stopped(philo->data))
+		return (NULL);
 	if (philo->data->nb_philo == 1)
 		return (lone_philo(philo));
-	ft_usleep(get_start_delay(philo));
+	ft_usleep(get_start_delay(philo), philo->data);
 	while (!is_stopped(philo->data))
 	{
 		eat(philo);
 		if (is_stopped(philo->data))
 			break ;
 		print_status(philo, "is sleeping");
-		ft_usleep(philo->data->time_sleep);
+		ft_usleep(philo->data->time_sleep, philo->data);
 		think(philo);
 	}
 	return (NULL);

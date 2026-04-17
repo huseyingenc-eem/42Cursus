@@ -20,13 +20,13 @@ long long	get_time(void)
 	return ((long long)tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_usleep(long long ms)
+void	ft_usleep(long long ms, t_data *data)
 {
 	long long	end_time;
 	long long	remaining;
 
 	end_time = get_time() + ms;
-	while (get_time() < end_time)
+	while (get_time() < end_time && !is_stopped(data))
 	{
 		remaining = end_time - get_time();
 		if (remaining > 2)

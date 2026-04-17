@@ -44,6 +44,7 @@ struct					s_data
 	int					time_sleep;
 	int					nb_meals;
 	int					stop;
+	int					ready;
 	long long			start_time;
 	int					forks_inited;
 	int					print_lock_inited;
@@ -73,7 +74,7 @@ void					*monitor(void *arg);
 
 /* utils.c */
 long long				get_time(void);
-void					ft_usleep(long long ms);
+void					ft_usleep(long long ms, t_data *data);
 void					print_status(t_philo *philo, char *msg);
 int						is_stopped(t_data *data);
 int						error_exit(char *msg);

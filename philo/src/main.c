@@ -34,6 +34,9 @@ static int	start_threads(t_data *data)
 			pthread_mutex_lock(&data->stop_lock);
 			data->stop = TRUE;
 			pthread_mutex_unlock(&data->stop_lock);
+			pthread_mutex_lock(&data->meal_lock);
+			data->ready = TRUE;
+			pthread_mutex_unlock(&data->meal_lock);
 			join_threads(data, i);
 			return (1);
 		}
@@ -41,19 +44,26 @@ static int	start_threads(t_data *data)
 	return (0);
 }
 
-static int	start_sim(t_data *data)
+static void	release_start_barrier(t_data *data)
 {
-	int			i;
-	pthread_t	monitor_th;
+	int	i;
 
-	data->start_time = get_time() + 100 + data->nb_philo;
 	pthread_mutex_lock(&data->meal_lock);
+	data->start_time = get_time();
 	i = -1;
 	while (++i < data->nb_philo)
 		data->philos[i].last_meal = data->start_time;
+	data->ready = TRUE;
 	pthread_mutex_unlock(&data->meal_lock);
+}
+
+static int	start_sim(t_data *data)
+{
+	pthread_t	monitor_th;
+
 	if (start_threads(data))
 		return (1);
+	release_start_barrier(data);
 	if (pthread_create(&monitor_th, NULL, monitor, data))
 	{
 		pthread_mutex_lock(&data->stop_lock);
