@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 14:30:00 by hgenc             #+#    #+#             */
-/*   Updated: 2026/02/10 14:30:00 by hgenc            ###   ########.fr       */
+/*   Updated: 2026/04/19 11:09:01 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+#include <unistd.h>
 
 static void	sync_start(t_philo *philo)
 {

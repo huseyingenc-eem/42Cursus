@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgenc <hgenc@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hgenc <hgenc@student.42kocaeli.com.tr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 14:30:00 by hgenc             #+#    #+#             */
-/*   Updated: 2026/02/10 14:30:00 by hgenc            ###   ########.fr       */
+/*   Updated: 2026/04/19 11:08:51 by hgenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+#include <string.h>
 
 static void	join_threads(t_data *data, int count)
 {
